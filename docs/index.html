@@ -639,6 +639,51 @@ Training dataset</div>
                 <li><span class="emoji">▶️</span> Simulation playback</li>
             </ul>
 
+            <h2><span class="emoji">🌊</span> AI Flood Prediction Examples</h2>
+            <p>
+                The trained U-Net baseline predicts flood depth from <strong>DEM</strong> and
+                <strong>rainfall time series</strong>. Below are example outputs generated from
+                real case data on the A5000 server.
+            </p>
+
+            <div class="highlight-box">
+                <h4><span class="emoji">🧠</span> What each panel shows</h4>
+                <p>
+                    Each prediction image contains five panels:
+                    <strong>DEM</strong>, <strong>Rain t0</strong>,
+                    <strong>Ground Truth Flood</strong>,
+                    <strong>Predicted Flood</strong>, and
+                    <strong>Absolute Error</strong>.
+                </p>
+            </div>
+
+            <div class="image-panel">
+                <img src="case_000001_pred.png" alt="AI Flood Prediction Example Case 1">
+                <div class="image-caption">
+                    Case 1: Terrain-aware flood prediction result from the trained U-Net model
+                </div>
+            </div>
+
+            <div class="image-panel">
+                <img src="case_000002_pred.png" alt="AI Flood Prediction Example Case 2">
+                <div class="image-caption">
+                    Case 2: Example prediction with DEM, rainfall input, ground truth, prediction, and error map
+                </div>
+            </div>
+
+            <div class="image-panel">
+                <img src="case_000003_pred.png" alt="AI Flood Prediction Example Case 3">
+                <div class="image-caption">
+                    Case 3: Another flood prediction example from the generated case dataset
+                </div>
+            </div>
+
+            <p>
+                These examples demonstrate that TwinMind-Disaster is not only a concept demo,
+                but a working <strong>terrain-aware flood prediction pipeline</strong> with
+                training, experiment tracking, and visual inference outputs.
+            </p>
+
             <h2><span class="emoji">📁</span> Project Structure</h2>
             <div class="file-tree">TwinMind-Disaster/
 │
