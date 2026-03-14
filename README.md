@@ -6,29 +6,25 @@ TwinMind-Disaster is a working prototype demonstrating how **terrain elevation (
 
 The project explores the concept of an **AI Digital Twin for disaster prediction**, where terrain information and environmental simulation are combined with machine learning to estimate flood risk before sensors detect it.
 
-Project Demo
+**Project Demo**  
 [https://gang0-jpg.github.io/TwinMind-Disaster/](https://gang0-jpg.github.io/TwinMind-Disaster/)
 
-GitHub Repository
+**GitHub Repository**  
 [https://github.com/gang0-jpg/TwinMind-Disaster](https://github.com/gang0-jpg/TwinMind-Disaster)
-
----
 
 ## What This Project Demonstrates
 
-TwinMind-Disaster implements the following pipeline
+TwinMind-Disaster implements the following pipeline:
 
-Terrain elevation (DEM)
-↓
-Rainfall simulation
-↓
-Deep learning flood prediction (U-Net)
-↓
+Terrain elevation (DEM)  
+↓  
+Rainfall simulation  
+↓  
+Deep learning flood prediction (U-Net)  
+↓  
 Flood risk visualization
 
 The model learns the relationship between **terrain shape and rainfall patterns** to predict **flood depth maps**.
-
----
 
 ## Example Results
 
@@ -40,7 +36,7 @@ The trained model produces terrain-aware flood prediction maps.
 
 ![](docs/case_000003_pred.png)
 
-Each prediction visualization shows
+Each prediction visualization shows:
 
 1. terrain elevation (DEM)
 2. rainfall input
@@ -50,40 +46,44 @@ Each prediction visualization shows
 
 These results demonstrate that **TwinMind-Disaster is a working terrain-aware flood prediction pipeline**.
 
----
+## Model Comparison
+
+We compared a simple CNN baseline with a U-Net architecture.
+
+The U-Net significantly improves spatial flood prediction accuracy and removes ring artifacts observed in the baseline model.
+
+Validation loss improved from **0.0025 → 0.00005** using the U-Net architecture.
+
+![](docs/model_comparison.png)
 
 ## System Architecture
 
-The prototype integrates terrain data, rainfall simulation and deep learning.
+The prototype integrates terrain data, rainfall simulation, and deep learning.
 
-Terrain data
-↓
-Terrain processing
-↓
-Deep learning model (U-Net)
-↓
-Flood depth prediction
-↓
+Terrain data  
+↓  
+Terrain processing  
+↓  
+Deep learning model (U-Net)  
+↓  
+Flood depth prediction  
+↓  
 Digital twin visualization
 
 This architecture demonstrates how terrain understanding can be integrated with AI to simulate disaster impact.
 
----
-
 ## Dashboard
 
-The prototype dashboard visualizes
+The prototype dashboard visualizes:
 
-• terrain elevation
-• predicted flood areas
-• model uncertainty
-• digital twin terrain map
+- terrain elevation
+- predicted flood areas
+- model uncertainty
+- digital twin terrain map
 
-Run locally
+Run locally:
 
-streamlit run ui/twinmind_dashboard.py
-
----
+`streamlit run ui/twinmind_dashboard.py`
 
 ## Key Components
 
@@ -91,146 +91,132 @@ streamlit run ui/twinmind_dashboard.py
 
 Terrain elevation data is processed from DEM.
 
-Processing pipeline
+Processing pipeline:
 
-DEM XML
-↓
-NumPy grid conversion
-↓
-DEM mosaic
-↓
-Resize to 64×64
-↓
+DEM XML  
+↓  
+NumPy grid conversion  
+↓  
+DEM mosaic  
+↓  
+Resize to 64×64  
+↓  
 Training dataset
 
-Generated datasets
+Generated datasets:
 
-data/dem_npy_grid
-dem_for_training.npy
-slope_for_training.npy
-
----
+- `data/dem_npy_grid/dem_for_training.npy`
+- `data/dem_npy_grid/slope_for_training.npy`
 
 ### Flood Prediction Model
 
-Model architecture
+**Model architecture**  
 Small U-Net
 
-Input channels
+**Input channels**
 
-DEM terrain elevation
-rainfall time series (6 timesteps)
+- DEM terrain elevation
+- rainfall time series (6 timesteps)
 
-Total input
-
+**Total input**  
 DEM + Rain(6) = 7 channels
 
-Output
-
+**Output**  
 Flood depth map
 
-Training script
-
-scripts/train_unet.py
-
----
+**Training script**  
+`scripts/train_unet.py`
 
 ### Experiment Tracking
 
 Experiments are tracked using MLflow.
 
-Run MLflow UI
+Run MLflow UI:
 
-mlflow ui
+`mlflow ui`
 
-Open in browser
+Open in browser:
 
 [http://localhost:5000](http://localhost:5000)
 
----
-
 ## Project Structure
 
+```text
 TwinMind-Disaster
-
-data
-scripts
-twinmind_disaster
-ui
-docs
-mlruns
-runs
-README.md
-requirements.txt
-
----
+├─ data
+├─ scripts
+├─ twinmind_disaster
+├─ ui
+├─ docs
+├─ mlruns
+├─ runs
+├─ README.md
+└─ requirements.txt
+```
 
 ## Installation
 
-Clone repository
+Clone repository:
 
-git clone [https://github.com/gang0-jpg/TwinMind-Disaster.git](https://github.com/gang0-jpg/TwinMind-Disaster.git)
+```bash
+git clone https://github.com/gang0-jpg/TwinMind-Disaster.git
 cd TwinMind-Disaster
+```
 
-Install dependencies
+Install dependencies:
 
+```bash
 pip install -r requirements.txt
+```
 
-Main dependencies
+Main dependencies:
 
-numpy
-torch
-mlflow
-streamlit
-matplotlib
-scipy
-
----
+- numpy
+- torch
+- mlflow
+- streamlit
+- matplotlib
+- scipy
 
 ## Training
 
-Run training
+Run training:
 
+```bash
 python scripts/train_unet.py --data_dir data/cases --epochs 10 --batch_size 4
+```
 
 Training results are automatically logged in MLflow.
 
----
-
 ## Data Source
 
-Terrain data is provided by
+Terrain data is provided by:
 
-Geospatial Information Authority of Japan (GSI)
+**Geospatial Information Authority of Japan (GSI)**  
 [https://www.gsi.go.jp/kiban/](https://www.gsi.go.jp/kiban/)
 
-Dataset
-
+**Dataset**  
 Basic Map Information DEM
 
 Note: DEM data is **not included in this repository**.
 
----
-
 ## TwinMind Vision
 
-TwinMind aims to become a
+TwinMind aims to become a:
 
-Reality Operating System for Earth
+**Reality Operating System for Earth**
 
-A platform where AI continuously learns from
+A platform where AI continuously learns from:
 
-terrain
-climate
-sensor networks
+- terrain
+- climate
+- sensor networks
 
-to
+To:
 
-predict disasters
-simulate environmental change
-optimize observation networks
-
----
+- predict disasters
+- simulate environmental change
+- optimize observation networks
 
 ## License
 
@@ -238,16 +224,12 @@ MIT License
 
 Copyright (c) 2024-2026 Zenji Oka
 
----
-
 ## Author
 
-Zenji Oka
+**Zenji Oka**  
 Creator of TwinMind
 
-GitHub
+GitHub:  
 [https://github.com/gang0-jpg](https://github.com/gang0-jpg)
-
----
 
 Predicting water, protecting life. 🌊
