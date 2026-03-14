@@ -1,412 +1,861 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
-  <style>
-    /* Default styles provided by pandoc.
-    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-    */
-    html {
-      color: #1a1a1a;
-      background-color: #fdfdfd;
-    }
-    body {
-      margin: 0 auto;
-      max-width: 36em;
-      padding-left: 50px;
-      padding-right: 50px;
-      padding-top: 50px;
-      padding-bottom: 50px;
-      hyphens: auto;
-      overflow-wrap: break-word;
-      text-rendering: optimizeLegibility;
-      font-kerning: normal;
-    }
-    @media (max-width: 600px) {
-      body {
-        font-size: 0.9em;
-        padding: 12px;
-      }
-      h1 {
-        font-size: 1.8em;
-      }
-    }
-    @media print {
-      html {
-        background-color: white;
-      }
-      body {
-        background-color: transparent;
-        color: black;
-        font-size: 12pt;
-      }
-      p, h2, h3 {
-        orphans: 3;
-        widows: 3;
-      }
-      h2, h3, h4 {
-        page-break-after: avoid;
-      }
-    }
-    p {
-      margin: 1em 0;
-    }
-    a {
-      color: #1a1a1a;
-    }
-    a:visited {
-      color: #1a1a1a;
-    }
-    img {
-      max-width: 100%;
-    }
-    svg {
-      height: auto;
-      max-width: 100%;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.4em;
-    }
-    h5, h6 {
-      font-size: 1em;
-      font-style: italic;
-    }
-    h6 {
-      font-weight: normal;
-    }
-    ol, ul {
-      padding-left: 1.7em;
-      margin-top: 1em;
-    }
-    li > ol, li > ul {
-      margin-top: 0;
-    }
-    blockquote {
-      margin: 1em 0 1em 1.7em;
-      padding-left: 1em;
-      border-left: 2px solid #e6e6e6;
-      color: #606060;
-    }
-    code {
-      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-      font-size: 85%;
-      margin: 0;
-      hyphens: manual;
-    }
-    pre {
-      margin: 1em 0;
-      overflow: auto;
-    }
-    pre code {
-      padding: 0;
-      overflow: visible;
-      overflow-wrap: normal;
-    }
-    .sourceCode {
-     background-color: transparent;
-     overflow: visible;
-    }
-    hr {
-      border: none;
-      border-top: 1px solid #1a1a1a;
-      height: 1px;
-      margin: 1em 0;
-    }
-    table {
-      margin: 1em 0;
-      border-collapse: collapse;
-      width: 100%;
-      overflow-x: auto;
-      display: block;
-      font-variant-numeric: lining-nums tabular-nums;
-    }
-    table caption {
-      margin-bottom: 0.75em;
-    }
-    tbody {
-      margin-top: 0.5em;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-    }
-    th {
-      border-top: 1px solid #1a1a1a;
-      padding: 0.25em 0.5em 0.25em 0.5em;
-    }
-    td {
-      padding: 0.125em 0.5em 0.25em 0.5em;
-    }
-    header {
-      margin-bottom: 4em;
-      text-align: center;
-    }
-    #TOC li {
-      list-style: none;
-    }
-    #TOC ul {
-      padding-left: 1.3em;
-    }
-    #TOC > ul {
-      padding-left: 0;
-    }
-    #TOC a:not(:hover) {
-      text-decoration: none;
-    }
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    /* The extra [class] is a hack that increases specificity enough to
-       override a similar rule in reveal.js */
-    ul.task-list[class]{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      font-size: inherit;
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
-    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TwinMind-Disaster - AI Digital Twin for Flood Prediction</title>
+    <meta name="description" content="AI Digital Twin platform for flood prediction and terrain-aware disaster monitoring using U-Net deep learning">
+    <meta property="og:title" content="TwinMind-Disaster">
+    <meta property="og:description" content="AI Digital Twin for Flood Prediction">
+    <meta property="og:image" content="dashboard.png">
+
+    <!-- Mermaid.js for dynamic diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #2d3748;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #4a5568;
+            border-left: 5px solid #667eea;
+            padding-left: 15px;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #553c9a;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul {
+            margin: 10px 0 15px 22px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .intro-box {
+            background: #f7fafc;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .goal-box {
+            background: #ebf8ff;
+            border-left: 5px solid #4299e1;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            font-weight: 600;
+        }
+
+        .scope-notice {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+            font-weight: 600;
+            color: #92400e;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .demo-link, .github-link {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .demo-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .github-link {
+            background: #24292e;
+            color: white;
+        }
+
+        .demo-link:hover, .github-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .mermaid {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .image-panel {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .image-panel img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
+        }
+
+        .image-caption {
+            margin-top: 12px;
+            font-size: 0.95em;
+            color: #718096;
+        }
+
+        .pipeline {
+            background: #fffaf0;
+            border: 2px solid #f6ad55;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        code {
+            background: #edf2f7;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e53e3e;
+        }
+
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f7fafc;
+        }
+
+        .file-tree {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .gsi-attribution {
+            background: #fffbeb;
+            border: 2px solid #fbbf24;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .gsi-attribution strong {
+            color: #d97706;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .vision-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .vision-box blockquote {
+            font-size: 1.3em;
+            font-style: italic;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid white;
+        }
+
+        .status-complete {
+            color: #48bb78;
+            font-weight: bold;
+        }
+
+        .status-progress {
+            color: #ed8936;
+            font-weight: bold;
+        }
+
+        .status-planned {
+            color: #a0aec0;
+            font-weight: bold;
+        }
+
+        .author-section {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .author-section a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .author-section a:hover {
+            text-decoration: underline;
+        }
+
+        .quote {
+            font-style: italic;
+            text-align: center;
+            color: #718096;
+            margin: 30px 0;
+            padding: 20px;
+            border-top: 2px solid #e2e8f0;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+
+        .dashboard-preview {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border: 3px dashed #667eea;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            margin: 30px 0;
+            color: #4a5568;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-preview::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .dashboard-preview img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-placeholder-text {
+            font-size: 1.1em;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-instruction {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .highlight-box h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        a {
+            color: #4c51bf;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
 </head>
 <body>
-<nav id="TOC" role="doc-toc">
-<ul>
-<li><a href="#twinmind-disaster"
-id="toc-twinmind-disaster">TwinMind-Disaster</a></li>
-<li><a href="#concept" id="toc-concept">Concept</a></li>
-<li><a href="#system-architecture" id="toc-system-architecture">System
-Architecture</a></li>
-<li><a href="#project-structure" id="toc-project-structure">Project
-Structure</a></li>
-<li><a href="#features" id="toc-features">Features</a>
-<ul>
-<li><a href="#terrain-processing" id="toc-terrain-processing">Terrain
-Processing</a></li>
-<li><a href="#flood-simulation" id="toc-flood-simulation">Flood
-Simulation</a></li>
-<li><a href="#deep-learning-flood-prediction"
-id="toc-deep-learning-flood-prediction">Deep Learning Flood
-Prediction</a></li>
-<li><a href="#sensor-placement-optimization"
-id="toc-sensor-placement-optimization">Sensor Placement
-Optimization</a></li>
-<li><a href="#digital-twin-dashboard"
-id="toc-digital-twin-dashboard">Digital Twin Dashboard</a></li>
-</ul></li>
-<li><a href="#installation" id="toc-installation">Installation</a></li>
-<li><a href="#data-preparation" id="toc-data-preparation">Data
-Preparation</a></li>
-<li><a href="#model-training" id="toc-model-training">Model
-Training</a></li>
-<li><a href="#prediction" id="toc-prediction">Prediction</a></li>
-<li><a href="#sensor-optimization" id="toc-sensor-optimization">Sensor
-Optimization</a></li>
-<li><a href="#technology-stack" id="toc-technology-stack">Technology
-Stack</a></li>
-<li><a href="#data-source" id="toc-data-source">Data Source</a></li>
-<li><a href="#future-work" id="toc-future-work">Future Work</a></li>
-<li><a href="#license" id="toc-license">License</a></li>
-<li><a href="#author" id="toc-author">Author</a></li>
-</ul>
-</nav>
-<h1 id="twinmind-disaster">TwinMind-Disaster</h1>
-<p><strong>TwinMind-Disaster</strong> is an experimental
-<strong>AI-driven Digital Twin platform</strong> for flood risk analysis
-and sensor optimization.</p>
-<p>The system combines <strong>terrain analysis, flood simulation, deep
-learning (U-Net), and sensor placement optimization</strong> to support
-disaster prevention and urban resilience.</p>
-<hr />
-<h1 id="concept">Concept</h1>
-<p>Modern cities require <strong>real-time disaster prediction and
-decision support</strong>.</p>
-<p>TwinMind-Disaster explores a <strong>Digital Twin
-architecture</strong> where virtual simulations and AI models support
-real-world disaster management.</p>
-<p>Main objectives:</p>
-<ul>
-<li>Flood risk prediction</li>
-<li>Optimal sensor placement</li>
-<li>Digital Twin monitoring interface</li>
-<li>AI-assisted disaster response</li>
-</ul>
-<hr />
-<h1 id="system-architecture">System Architecture</h1>
-<pre><code>Terrain DEM
-     │
-     ▼
-Flood Simulation Engine
-     │
-     ▼
-Training Dataset (NPZ)
-     │
-     ▼
-Deep Learning Model (U-Net)
-     │
-     ▼
-Flood Prediction
-     │
-     ▼
-Sensor Optimization
-     │
-     ▼
-Digital Twin Dashboard</code></pre>
-<hr />
-<h1 id="project-structure">Project Structure</h1>
-<pre><code>TwinMind-Disaster
+    <div class="container">
+        <div class="main-content">
+            <h1>🌊 TwinMind-Disaster</h1>
+            <div class="tagline">AI Digital Twin for Flood Prediction</div>
+
+            <div class="scope-notice">
+                This repository is an early flood-prediction prototype of the broader TwinMind vision.
+            </div>
+
+            <p><strong>TwinMind-Disaster</strong> is a research prototype demonstrating how <strong>AI Digital Twin technology</strong> can be applied to <strong>flood prediction and terrain-aware disaster monitoring</strong>.</p>
+
+            <div class="intro-box">
+                <p><strong>The system integrates:</strong></p>
+                <ul>
+                    <li><span class="emoji">🗺️</span> Terrain data (DEM)</li>
+                    <li><span class="emoji">🤖</span> Deep learning (U-Net)</li>
+                    <li><span class="emoji">🌐</span> Digital Twin visualization</li>
+                    <li><span class="emoji">📡</span> Sensor placement optimization</li>
+                </ul>
+            </div>
+
+            <div class="goal-box">
+                <span class="emoji">🎯</span> <strong>Goal</strong>: Explore a future <strong>AI-driven disaster observation infrastructure</strong>.
+            </div>
+
+            <h2><span class="emoji">🎬</span> Demo & Code</h2>
+            <div class="button-group">
+                <a href="https://gang0-jpg.github.io/TwinMind-Disaster/" class="demo-link">🔗 Project Website</a>
+                <a href="https://github.com/gang0-jpg/TwinMind-Disaster" class="github-link">💻 GitHub Repository</a>
+            </div>
+
+            <h2><span class="emoji">💡</span> TwinMind Concept</h2>
+            <p><strong>TwinMind</strong> is an <strong>AI Digital Twin platform</strong>.</p>
+
+            <div class="intro-box">
+                <p>Instead of humans deciding where to observe, <strong>AI determines optimal observation locations</strong>.</p>
+            </div>
+
+            <h3><span class="emoji">🔄</span> System Flow</h3>
+            <div class="mermaid">
+graph TD
+    A[🗺️ DEM Terrain Data] --> B[⚙️ Terrain Processing]
+    B --> C[🤖 U-Net Flood Prediction]
+    C --> D[📊 Risk Estimation]
+    D --> E[📡 Sensor Optimization]
+    E --> F[🖥️ Digital Twin Dashboard]
+
+    style A fill:#e3f2fd,stroke:#1976d2
+    style C fill:#e8f5e9,stroke:#388e3c
+    style F fill:#fff3e0,stroke:#f57c00
+            </div>
+
+            <p><em>This prototype focuses on flood prediction using terrain data.</em></p>
+
+            <h2><span class="emoji">🏗️</span> TwinMind System Architecture</h2>
+            <div class="mermaid">
+graph LR
+    subgraph Data_Layer["📦 Data Layer"]
+        D1[🗺️ DEM]
+        D2[🛰️ Satellite]
+        D3[🌧️ Rainfall]
+        D4[📡 IoT Sensors]
+    end
+
+    subgraph Observation_Layer["🔍 TwinMind Observation Layer"]
+        O1[Data Ingestion]
+        O2[Preprocessing]
+        O3[Feature Extraction]
+    end
+
+    subgraph AI_Layer["🧠 AI Prediction Layer"]
+        A1[U-Net Flood Model]
+        A2[Risk Estimation]
+        A3[Uncertainty Quantification]
+    end
+
+    subgraph Decision_Layer["⚡ Decision Layer"]
+        Dec1[Sensor Placement Optimization]
+        Dec2[Alert Generation]
+        Dec3[Resource Allocation]
+    end
+
+    subgraph UI_Layer["🖥️ Digital Twin UI"]
+        U1[Terrain Visualization]
+        U2[Flood Risk Heatmap]
+        U3[Real-time Monitoring]
+        U4[Simulation Playback]
+    end
+
+    Data_Layer --> Observation_Layer
+    Observation_Layer --> AI_Layer
+    AI_Layer --> Decision_Layer
+    Decision_Layer --> UI_Layer
+
+    style Data_Layer fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style Observation_Layer fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style AI_Layer fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Decision_Layer fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style UI_Layer fill:#e0f7fa,stroke:#00838f,stroke-width:2px
+            </div>
+
+            <div class="image-panel">
+                <img src="architecture.png" alt="TwinMind System Architecture">
+                <div class="image-caption">Visual system architecture for TwinMind-Disaster</div>
+            </div>
+
+            <h2><span class="emoji">✨</span> Features</h2>
+
+            <h3><span class="emoji">🗂️</span> Terrain Processing (DEM)</h3>
+            <p>Terrain elevation data is processed from DEM XML files.</p>
+
+            <p><strong>Processing Pipeline:</strong></p>
+            <div class="pipeline">DEM XML
+   ↓
+Grid conversion (NumPy)
+   ↓
+Mosaic generation
+   ↓
+Resize to 64×64
+   ↓
+Training dataset</div>
+
+            <p><strong>Generated Datasets:</strong></p>
+            <ul>
+                <li><code>data/dem_npy_grid/dem_for_training.npy</code></li>
+                <li><code>data/dem_npy_grid/slope_for_training.npy</code></li>
+            </ul>
+
+            <h3><span class="emoji">🌊</span> Flood Prediction Model</h3>
+            <p><strong>Prototype model:</strong> Small U-Net</p>
+
+            <p><strong>Architecture:</strong></p>
+            <div class="pipeline">Conv2d(1,16) → Conv2d(16,16) → Conv2d(16,1)</div>
+
+            <p><strong>Input:</strong></p>
+            <ul>
+                <li>DEM (Digital Elevation Model)</li>
+                <li>Slope</li>
+            </ul>
+
+            <p><strong>Training script:</strong> <code>scripts/train_unet.py</code></p>
+
+            <h3><span class="emoji">📊</span> Experiment Tracking</h3>
+            <p>Experiments are tracked using <strong>MLflow</strong>.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>use_dem</code></td>
+                        <td>Use DEM data as input</td>
+                    </tr>
+                    <tr>
+                        <td><code>use_slope</code></td>
+                        <td>Use slope data as input</td>
+                    </tr>
+                    <tr>
+                        <td><code>epochs</code></td>
+                        <td>Number of training epochs</td>
+                    </tr>
+                    <tr>
+                        <td><code>batch_size</code></td>
+                        <td>Batch size for training</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Experiment logs:</strong> <code>mlruns/</code></p>
+
+            <h3><span class="emoji">🖥️</span> Digital Twin Dashboard</h3>
+            <p><strong>Prototype dashboard:</strong> <code>ui/twinmind_dashboard.py</code></p>
+
+            <div class="dashboard-preview">
+                <p class="dashboard-placeholder-text">
+                    <span class="emoji">🖼️</span> <strong>Dashboard Preview</strong><br><br>
+                    <em>Interactive flood risk visualization and terrain analysis</em>
+                </p>
+
+                <img src="dashboard.png" alt="TwinMind Dashboard Screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+
+                <div style="display:none; margin-top: 20px; padding: 20px; background: white; border-radius: 8px; position: relative; z-index: 1;">
+                    <span class="emoji">📷</span> Screenshot will appear here<br><br>
+                    <div class="dashboard-instruction">
+                        <strong>To add screenshot:</strong><br>
+                        1. Run: <code>streamlit run ui/twinmind_dashboard.py</code><br>
+                        2. Take screenshot<br>
+                        3. Save as: <code>dashboard.png</code><br>
+                        4. Git push
+                    </div>
+                </div>
+            </div>
+
+            <p><strong>Future capabilities:</strong></p>
+            <ul>
+                <li><span class="emoji">🏔️</span> Terrain visualization</li>
+                <li><span class="emoji">🔥</span> Flood risk heatmap</li>
+                <li><span class="emoji">📡</span> Real-time sensor integration</li>
+                <li><span class="emoji">▶️</span> Simulation playback</li>
+            </ul>
+
+            <h2><span class="emoji">📁</span> Project Structure</h2>
+            <div class="file-tree">TwinMind-Disaster/
 │
-├ data
-│ ├ raw_dem
-│ ├ raw_mask
-│ ├ cases
-│ └ preview
+├─ data/
+│   ├─ raw_dem/              # Raw DEM data (user-provided)
+│   ├─ dem_xml/              # GSI DEM XML files
+│   └─ dem_npy_grid/         # Processed NumPy arrays
+│       ├─ dem_for_training.npy
+│       └─ slope_for_training.npy
 │
-├ scripts
-│ ├ generate_cases.py
-│ ├ train_unet.py
-│ ├ predict_unet.py
-│ ├ predict_ensemble.py
-│ ├ optimize_sensors.py
-│ ├ dem_xml_to_npy.py
-│ └ make_slope.py
+├─ scripts/
+│   ├─ dem_xml_to_grid_npy.py   # XML → NumPy conversion
+│   ├─ mosaic_dem.py            # DEM mosaic generation
+│   ├─ resize_dem.py            # Resize to 64×64
+│   ├─ make_slope.py            # Slope calculation
+│   └─ train_unet.py            # U-Net training script
 │
-├ twinmind_disaster
-│ ├ model_unet.py
-│ ├ flood_solver.py
-│ ├ rain_generator.py
-│ ├ dataset_loader.py
-│ ├ dem_utils.py
-│ └ case_builder.py
+├─ twinmind_disaster/      # Core Python package
 │
-├ ui
-│ └ twinmind_dashboard.py
+├─ ui/
+│   └─ twinmind_dashboard.py # Streamlit dashboard
 │
-├ README.md
-├ requirements.txt
-└ .gitignore</code></pre>
-<hr />
-<h1 id="features">Features</h1>
-<h3 id="terrain-processing">Terrain Processing</h3>
-<ul>
-<li>DEM processing using <strong>GSI elevation data</strong></li>
-<li>slope map generation</li>
-<li>terrain preprocessing for flood simulation</li>
-</ul>
-<hr />
-<h3 id="flood-simulation">Flood Simulation</h3>
-<p>A lightweight flood solver generates synthetic flood scenarios.</p>
-<p>Features:</p>
-<ul>
-<li>rainfall scenario generator</li>
-<li>terrain-based water flow simulation</li>
-<li>dataset generation for AI training</li>
-</ul>
-<p>Output format:</p>
-<pre><code>NPZ dataset
-├ rain
-├ dem
-└ flood</code></pre>
-<hr />
-<h3 id="deep-learning-flood-prediction">Deep Learning Flood
-Prediction</h3>
-<p>A <strong>U-Net based CNN model</strong> predicts flood distribution
-from rainfall and terrain.</p>
-<p>Input channels:</p>
-<ul>
-<li>rainfall map</li>
-<li>DEM elevation</li>
-<li>slope map</li>
-</ul>
-<p>Output:</p>
-<ul>
-<li>flood probability / water depth</li>
-</ul>
-<p>Framework:</p>
-<ul>
-<li>PyTorch</li>
-</ul>
-<hr />
-<h3 id="sensor-placement-optimization">Sensor Placement
-Optimization</h3>
-<p>Sensor positions are optimized using predicted flood maps.</p>
-<p>Goal:</p>
-<ul>
-<li>maximize information gain</li>
-<li>minimize sensor count</li>
-<li>improve monitoring coverage</li>
-</ul>
-<p>Outputs:</p>
-<pre><code>sensor locations
-coverage visualization
-optimization logs</code></pre>
-<hr />
-<h3 id="digital-twin-dashboard">Digital Twin Dashboard</h3>
-<p>An interactive dashboard built with <strong>Streamlit</strong>.</p>
-<p>Features:</p>
-<ul>
-<li>terrain visualization</li>
-<li>rainfall scenario display</li>
-<li>flood prediction results</li>
-<li>sensor optimization visualization</li>
-</ul>
-<p>Run:</p>
-<pre><code>streamlit run ui/twinmind_dashboard.py</code></pre>
-<hr />
-<h1 id="installation">Installation</h1>
-<pre><code>pip install -r requirements.txt</code></pre>
-<hr />
-<h1 id="data-preparation">Data Preparation</h1>
-<p>Generate flood simulation cases:</p>
-<pre><code>python scripts/generate_cases.py</code></pre>
-<p>Output:</p>
-<pre><code>data/cases/*.npz</code></pre>
-<hr />
-<h1 id="model-training">Model Training</h1>
-<p>Train the U-Net model:</p>
-<pre><code>python scripts/train_unet.py</code></pre>
-<p>Output:</p>
-<pre><code>runs/unet_best.pt</code></pre>
-<hr />
-<h1 id="prediction">Prediction</h1>
-<p>Run flood prediction:</p>
-<pre><code>python scripts/predict_unet.py</code></pre>
-<hr />
-<h1 id="sensor-optimization">Sensor Optimization</h1>
-<pre><code>python scripts/optimize_sensors.py</code></pre>
-<p>Results:</p>
-<pre><code>runs/sensor_optimization/</code></pre>
-<hr />
-<h1 id="technology-stack">Technology Stack</h1>
-<ul>
-<li>Python</li>
-<li>PyTorch</li>
-<li>NumPy</li>
-<li>Streamlit</li>
-<li>MLflow</li>
-</ul>
-<hr />
-<h1 id="data-source">Data Source</h1>
-<p>Elevation data from:</p>
-<p><strong>Geospatial Information Authority of Japan (GSI)</strong></p>
-<p>Base Map Information DEM</p>
-<hr />
-<h1 id="future-work">Future Work</h1>
-<p>Possible extensions:</p>
-<ul>
-<li>real-time rainfall integration</li>
-<li>IoT flood sensor networks</li>
-<li>large-scale city simulation</li>
-<li>GPU acceleration</li>
-<li>reinforcement learning for sensor deployment</li>
-</ul>
-<hr />
-<h1 id="license">License</h1>
-<p>MIT License</p>
-<hr />
-<h1 id="author">Author</h1>
-<p>TwinMind Disaster Research Prototype</p>
+├─ docs/
+│   ├─ index.html          # GitHub Pages demo
+│   ├─ architecture.png     # System architecture image
+│   └─ dashboard.png       # Dashboard screenshot
+│
+├─ mlruns/                 # MLflow experiment logs (auto-generated)
+│
+├─ README.md
+├─ requirements.txt
+└─ .gitignore</div>
+
+            <h2><span class="emoji">⚙️</span> Installation</h2>
+            <pre><code># 1. Clone repository
+git clone https://github.com/gang0-jpg/TwinMind-Disaster.git
+cd TwinMind-Disaster
+
+# 2. Install dependencies
+pip install -r requirements.txt</code></pre>
+
+            <p><strong>requirements.txt</strong> (example):</p>
+            <pre><code>numpy>=1.24.0
+torch>=2.0.0
+mlflow>=2.5.0
+streamlit>=1.28.0
+matplotlib>=3.7.0
+scipy>=1.10.0</code></pre>
+
+            <h2><span class="emoji">🚀</span> Training</h2>
+            <pre><code># Run default training
+python scripts/train_unet.py
+
+# Run with custom parameters
+python scripts/train_unet.py \
+    --epochs 10 \
+    --batch_size 4 \
+    --use_dem True \
+    --use_slope True</code></pre>
+
+            <div class="intro-box">
+                <p><span class="emoji">✅</span> Training results and metrics will be automatically logged in <strong>MLflow</strong>.<br>
+                <span class="emoji">📊</span> View experiments: <code>mlflow ui</code> → open http://localhost:5000</p>
+            </div>
+
+            <h2><span class="emoji">📦</span> Data Source</h2>
+
+            <div class="gsi-attribution">
+                <strong>🗾 Geospatial Information Authority of Japan (GSI)</strong>
+                <p>This project uses terrain data from the <strong>Geospatial Information Authority of Japan (GSI)</strong>.</p>
+                <p><strong>Source:</strong> GSI Basic Map Information DEM (Kiban Chizu Joho / 基盤地図情報)<br>
+                🔗 <a href="https://www.gsi.go.jp/kiban/">https://www.gsi.go.jp/kiban/</a></p>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #92400e;">
+                    <strong>Note:</strong> DEM data is not included in this repository. Users should download the data directly from GSI
+                    and follow GSI terms of use and attribution requirements.
+                </p>
+            </div>
+
+            <h2><span class="emoji">🗓️</span> Roadmap</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Feature</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🔹 Phase 1</td>
+                        <td>DEM preprocessing pipeline</td>
+                        <td class="status-complete">✅ Complete</td>
+                    </tr>
+                    <tr>
+                        <td>🔹 Phase 2</td>
+                        <td>U-Net flood prediction prototype</td>
+                        <td class="status-complete">✅ Complete</td>
+                    </tr>
+                    <tr>
+                        <td>🔹 Phase 3</td>
+                        <td>MLflow experiment tracking</td>
+                        <td class="status-complete">✅ Complete</td>
+                    </tr>
+                    <tr>
+                        <td>🔸 Phase 4</td>
+                        <td>Dashboard MVP (Streamlit)</td>
+                        <td class="status-progress">🚧 In Progress</td>
+                    </tr>
+                    <tr>
+                        <td>⚪ Phase 5</td>
+                        <td>Sensor placement optimization</td>
+                        <td class="status-planned">📋 Planned</td>
+                    </tr>
+                    <tr>
+                        <td>⚪ Phase 6</td>
+                        <td>Real-time data ingestion</td>
+                        <td class="status-planned">📋 Planned</td>
+                    </tr>
+                    <tr>
+                        <td>⚪ Phase 7</td>
+                        <td>Advanced U-Net / Transformer architecture</td>
+                        <td class="status-planned">📋 Planned</td>
+                    </tr>
+                    <tr>
+                        <td>⚪ Phase 8</td>
+                        <td>Full TwinMind Digital Twin platform</td>
+                        <td class="status-planned">🔭 Vision</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2><span class="emoji">🔭</span> TwinMind Vision</h2>
+
+            <div class="vision-box">
+                <h3 style="color: white; margin-bottom: 20px;">Reality Operating System for Earth</h3>
+                <blockquote>
+                    "TwinMind is not just analyzing data.<br>
+                    <strong>It decides where to observe next.</strong>"
+                </blockquote>
+                <p style="margin-top: 20px;">
+                    <strong>TwinMind</strong> aims to become a <strong>Reality Operating System</strong> for Earth observation —
+                    where AI continuously learns from terrain, climate, and sensor data to predict, simulate,
+                    and optimize real-world outcomes.
+                </p>
+            </div>
+
+            <div class="highlight-box">
+                <h4><span class="emoji">💡</span> Key Innovation</h4>
+                <p><strong>AI does not only analyze data. It decides where to observe next.</strong></p>
+                <p>Traditional systems rely on humans to decide observation points. TwinMind uses AI to autonomously determine optimal sensor placement, creating a self-optimizing observation network.</p>
+            </div>
+
+            <p><strong>Potential applications:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Domain</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="emoji">🚨</span> Disaster Monitoring</td>
+                        <td>Flood, landslide, earthquake risk prediction</td>
+                    </tr>
+                    <tr>
+                        <td><span class="emoji">🌍</span> Climate Observation</td>
+                        <td>Extreme weather modeling & adaptation</td>
+                    </tr>
+                    <tr>
+                        <td><span class="emoji">🏙️</span> Smart Cities</td>
+                        <td>Urban flood resilience planning</td>
+                    </tr>
+                    <tr>
+                        <td><span class="emoji">🏗️</span> Infrastructure</td>
+                        <td>Bridge, dam, and levee health monitoring</td>
+                    </tr>
+                    <tr>
+                        <td><span class="emoji">🌱</span> Environmental Intelligence</td>
+                        <td>Ecosystem change detection & conservation</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2><span class="emoji">📜</span> License</h2>
+            <p><strong>MIT License</strong><br>
+            Copyright (c) 2024–2026 Zenji Oka</p>
+
+            <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+            <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+            <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
+            <div class="author-section">
+                <h2><span class="emoji">👤</span> Author</h2>
+                <p><strong>Zenji Oka</strong><br>
+                <em>Creator of TwinMind | AI Digital Twin Research</em></p>
+                <p>
+                    🔗 <a href="https://github.com/gang0-jpg">GitHub</a><br>
+                    🌐 <a href="https://gang0-jpg.github.io/">Portfolio</a>
+                </p>
+            </div>
+
+            <h2><span class="emoji">🙏</span> Acknowledgements</h2>
+            <ul>
+                <li><span class="emoji">🗾</span> Terrain data provided by <strong>Geospatial Information Authority of Japan (GSI)</strong></li>
+                <li><span class="emoji">🧠</span> U-Net architecture inspired by Ronneberger et al. (2015)</li>
+                <li><span class="emoji">📦</span> Tools: <a href="https://mlflow.org">MLflow</a>, <a href="https://streamlit.io">Streamlit</a>, <a href="https://pytorch.org">PyTorch</a>, <a href="https://mermaid.js.org">Mermaid</a></li>
+                <li><span class="emoji">🌟</span> Special thanks to open-source contributors and disaster resilience researchers worldwide</li>
+            </ul>
+
+            <div class="quote">
+                <p><span class="emoji">🌊</span> <em>"Predicting water, protecting life."</em><br>
+                — TwinMind-Disaster Project</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
