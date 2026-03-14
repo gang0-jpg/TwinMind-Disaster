@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>README</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#twinmind-disaster"
+id="toc-twinmind-disaster">TwinMind-Disaster</a></li>
+<li><a href="#concept" id="toc-concept">Concept</a></li>
+<li><a href="#system-architecture" id="toc-system-architecture">System
+Architecture</a></li>
+<li><a href="#project-structure" id="toc-project-structure">Project
+Structure</a></li>
+<li><a href="#features" id="toc-features">Features</a>
+<ul>
+<li><a href="#terrain-processing" id="toc-terrain-processing">Terrain
+Processing</a></li>
+<li><a href="#flood-simulation" id="toc-flood-simulation">Flood
+Simulation</a></li>
+<li><a href="#deep-learning-flood-prediction"
+id="toc-deep-learning-flood-prediction">Deep Learning Flood
+Prediction</a></li>
+<li><a href="#sensor-placement-optimization"
+id="toc-sensor-placement-optimization">Sensor Placement
+Optimization</a></li>
+<li><a href="#digital-twin-dashboard"
+id="toc-digital-twin-dashboard">Digital Twin Dashboard</a></li>
+</ul></li>
+<li><a href="#installation" id="toc-installation">Installation</a></li>
+<li><a href="#data-preparation" id="toc-data-preparation">Data
+Preparation</a></li>
+<li><a href="#model-training" id="toc-model-training">Model
+Training</a></li>
+<li><a href="#prediction" id="toc-prediction">Prediction</a></li>
+<li><a href="#sensor-optimization" id="toc-sensor-optimization">Sensor
+Optimization</a></li>
+<li><a href="#technology-stack" id="toc-technology-stack">Technology
+Stack</a></li>
+<li><a href="#data-source" id="toc-data-source">Data Source</a></li>
+<li><a href="#future-work" id="toc-future-work">Future Work</a></li>
+<li><a href="#license" id="toc-license">License</a></li>
+<li><a href="#author" id="toc-author">Author</a></li>
+</ul>
+</nav>
+<h1 id="twinmind-disaster">TwinMind-Disaster</h1>
+<p><strong>TwinMind-Disaster</strong> is an experimental
+<strong>AI-driven Digital Twin platform</strong> for flood risk analysis
+and sensor optimization.</p>
+<p>The system combines <strong>terrain analysis, flood simulation, deep
+learning (U-Net), and sensor placement optimization</strong> to support
+disaster prevention and urban resilience.</p>
+<hr />
+<h1 id="concept">Concept</h1>
+<p>Modern cities require <strong>real-time disaster prediction and
+decision support</strong>.</p>
+<p>TwinMind-Disaster explores a <strong>Digital Twin
+architecture</strong> where virtual simulations and AI models support
+real-world disaster management.</p>
+<p>Main objectives:</p>
+<ul>
+<li>Flood risk prediction</li>
+<li>Optimal sensor placement</li>
+<li>Digital Twin monitoring interface</li>
+<li>AI-assisted disaster response</li>
+</ul>
+<hr />
+<h1 id="system-architecture">System Architecture</h1>
+<pre><code>Terrain DEM
+     │
+     ▼
+Flood Simulation Engine
+     │
+     ▼
+Training Dataset (NPZ)
+     │
+     ▼
+Deep Learning Model (U-Net)
+     │
+     ▼
+Flood Prediction
+     │
+     ▼
+Sensor Optimization
+     │
+     ▼
+Digital Twin Dashboard</code></pre>
+<hr />
+<h1 id="project-structure">Project Structure</h1>
+<pre><code>TwinMind-Disaster
+│
+├ data
+│ ├ raw_dem
+│ ├ raw_mask
+│ ├ cases
+│ └ preview
+│
+├ scripts
+│ ├ generate_cases.py
+│ ├ train_unet.py
+│ ├ predict_unet.py
+│ ├ predict_ensemble.py
+│ ├ optimize_sensors.py
+│ ├ dem_xml_to_npy.py
+│ └ make_slope.py
+│
+├ twinmind_disaster
+│ ├ model_unet.py
+│ ├ flood_solver.py
+│ ├ rain_generator.py
+│ ├ dataset_loader.py
+│ ├ dem_utils.py
+│ └ case_builder.py
+│
+├ ui
+│ └ twinmind_dashboard.py
+│
+├ README.md
+├ requirements.txt
+└ .gitignore</code></pre>
+<hr />
+<h1 id="features">Features</h1>
+<h3 id="terrain-processing">Terrain Processing</h3>
+<ul>
+<li>DEM processing using <strong>GSI elevation data</strong></li>
+<li>slope map generation</li>
+<li>terrain preprocessing for flood simulation</li>
+</ul>
+<hr />
+<h3 id="flood-simulation">Flood Simulation</h3>
+<p>A lightweight flood solver generates synthetic flood scenarios.</p>
+<p>Features:</p>
+<ul>
+<li>rainfall scenario generator</li>
+<li>terrain-based water flow simulation</li>
+<li>dataset generation for AI training</li>
+</ul>
+<p>Output format:</p>
+<pre><code>NPZ dataset
+├ rain
+├ dem
+└ flood</code></pre>
+<hr />
+<h3 id="deep-learning-flood-prediction">Deep Learning Flood
+Prediction</h3>
+<p>A <strong>U-Net based CNN model</strong> predicts flood distribution
+from rainfall and terrain.</p>
+<p>Input channels:</p>
+<ul>
+<li>rainfall map</li>
+<li>DEM elevation</li>
+<li>slope map</li>
+</ul>
+<p>Output:</p>
+<ul>
+<li>flood probability / water depth</li>
+</ul>
+<p>Framework:</p>
+<ul>
+<li>PyTorch</li>
+</ul>
+<hr />
+<h3 id="sensor-placement-optimization">Sensor Placement
+Optimization</h3>
+<p>Sensor positions are optimized using predicted flood maps.</p>
+<p>Goal:</p>
+<ul>
+<li>maximize information gain</li>
+<li>minimize sensor count</li>
+<li>improve monitoring coverage</li>
+</ul>
+<p>Outputs:</p>
+<pre><code>sensor locations
+coverage visualization
+optimization logs</code></pre>
+<hr />
+<h3 id="digital-twin-dashboard">Digital Twin Dashboard</h3>
+<p>An interactive dashboard built with <strong>Streamlit</strong>.</p>
+<p>Features:</p>
+<ul>
+<li>terrain visualization</li>
+<li>rainfall scenario display</li>
+<li>flood prediction results</li>
+<li>sensor optimization visualization</li>
+</ul>
+<p>Run:</p>
+<pre><code>streamlit run ui/twinmind_dashboard.py</code></pre>
+<hr />
+<h1 id="installation">Installation</h1>
+<pre><code>pip install -r requirements.txt</code></pre>
+<hr />
+<h1 id="data-preparation">Data Preparation</h1>
+<p>Generate flood simulation cases:</p>
+<pre><code>python scripts/generate_cases.py</code></pre>
+<p>Output:</p>
+<pre><code>data/cases/*.npz</code></pre>
+<hr />
+<h1 id="model-training">Model Training</h1>
+<p>Train the U-Net model:</p>
+<pre><code>python scripts/train_unet.py</code></pre>
+<p>Output:</p>
+<pre><code>runs/unet_best.pt</code></pre>
+<hr />
+<h1 id="prediction">Prediction</h1>
+<p>Run flood prediction:</p>
+<pre><code>python scripts/predict_unet.py</code></pre>
+<hr />
+<h1 id="sensor-optimization">Sensor Optimization</h1>
+<pre><code>python scripts/optimize_sensors.py</code></pre>
+<p>Results:</p>
+<pre><code>runs/sensor_optimization/</code></pre>
+<hr />
+<h1 id="technology-stack">Technology Stack</h1>
+<ul>
+<li>Python</li>
+<li>PyTorch</li>
+<li>NumPy</li>
+<li>Streamlit</li>
+<li>MLflow</li>
+</ul>
+<hr />
+<h1 id="data-source">Data Source</h1>
+<p>Elevation data from:</p>
+<p><strong>Geospatial Information Authority of Japan (GSI)</strong></p>
+<p>Base Map Information DEM</p>
+<hr />
+<h1 id="future-work">Future Work</h1>
+<p>Possible extensions:</p>
+<ul>
+<li>real-time rainfall integration</li>
+<li>IoT flood sensor networks</li>
+<li>large-scale city simulation</li>
+<li>GPU acceleration</li>
+<li>reinforcement learning for sensor deployment</li>
+</ul>
+<hr />
+<h1 id="license">License</h1>
+<p>MIT License</p>
+<hr />
+<h1 id="author">Author</h1>
+<p>TwinMind Disaster Research Prototype</p>
+</body>
+</html>
