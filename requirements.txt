@@ -1,0 +1,6 @@
+torch
+numpy
+pillow
+mlflow
+streamlit
+matplotlib

@@ -1,0 +1,123 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+import argparse
+import numpy as np
+import torch
+import matplotlib.pyplot as plt
+
+from twinmind_disaster.dataset_loader import FloodNPZDataset
+from twinmind_disaster.model_unet import UNetSmall
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--cases_dir", type=str, default="data/cases")
+    parser.add_argument("--model_path", type=str, default="runs/unet_small_best.pt")
+    parser.add_argument("--output_dir", type=str, default="runs/predictions")
+    parser.add_argument("--num_samples", type=int, default=5)
+    parser.add_argument("--start_idx", type=int, default=0)
+    return parser.parse_args()
+
+
+def save_prediction_figure(
+    output_path: Path,
+    dem: np.ndarray,
+    rain0: np.ndarray,
+    gt: np.ndarray,
+    pred: np.ndarray,
+    err: np.ndarray,
+    case_name: str,
+):
+    fig, axes = plt.subplots(1, 5, figsize=(20, 4))
+
+    im0 = axes[0].imshow(dem, cmap="terrain")
+    axes[0].set_title("DEM")
+    plt.colorbar(im0, ax=axes[0], fraction=0.046, pad=0.04)
+
+    im1 = axes[1].imshow(rain0, cmap="Blues")
+    axes[1].set_title("Rain t0")
+    plt.colorbar(im1, ax=axes[1], fraction=0.046, pad=0.04)
+
+    im2 = axes[2].imshow(gt, cmap="viridis")
+    axes[2].set_title("GT Flood")
+    plt.colorbar(im2, ax=axes[2], fraction=0.046, pad=0.04)
+
+    im3 = axes[3].imshow(pred, cmap="viridis")
+    axes[3].set_title("Pred Flood")
+    plt.colorbar(im3, ax=axes[3], fraction=0.046, pad=0.04)
+
+    im4 = axes[4].imshow(err, cmap="magma")
+    axes[4].set_title("Abs Error")
+    plt.colorbar(im4, ax=axes[4], fraction=0.046, pad=0.04)
+
+    for ax in axes:
+        ax.set_xticks([])
+        ax.set_yticks([])
+
+    fig.suptitle(case_name)
+    plt.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(output_path, dpi=140)
+    plt.close(fig)
+
+
+def main():
+    args = parse_args()
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"[info] device = {device}")
+
+    dataset = FloodNPZDataset(args.cases_dir)
+
+    # 入力チャネル = DEM(1) + Rain(6) = 7
+    model = UNetSmall(in_channels=7, out_channels=1, base_ch=32).to(device)
+
+    ckpt = torch.load(args.model_path, map_location=device)
+    model.load_state_dict(ckpt["model_state_dict"])
+    model.eval()
+
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    end_idx = min(args.start_idx + args.num_samples, len(dataset))
+
+    with torch.no_grad():
+        for idx in range(args.start_idx, end_idx):
+            sample = dataset[idx]
+
+            x = sample["x"].unsqueeze(0).to(device)      # (1, C, H, W)
+            y = sample["y"].squeeze(0).cpu().numpy()     # (H, W)
+            mask = sample["mask"].squeeze(0).cpu().numpy()
+            case_path = Path(sample["path"])
+
+            pred = model(x).squeeze(0).squeeze(0).cpu().numpy()
+            pred = pred * mask
+
+            err = np.abs(pred - y)
+
+            # 可視化用に入力を分解
+            x_np = sample["x"].cpu().numpy()
+            dem = x_np[0]        # 正規化済みDEM
+            rain0 = x_np[1]      # 正規化済み rain t0
+
+            out_path = output_dir / f"{case_path.stem}_pred.png"
+            save_prediction_figure(
+                output_path=out_path,
+                dem=dem,
+                rain0=rain0,
+                gt=y,
+                pred=pred,
+                err=err,
+                case_name=case_path.stem,
+            )
+
+            mae = float((err * mask).sum() / np.clip(mask.sum(), 1, None))
+            print(f"[OK] {case_path.stem} -> {out_path} | masked_MAE={mae:.6f}")
+
+    print("[done]")
+
+
+if __name__ == "__main__":
+    main()
