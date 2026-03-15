@@ -26,7 +26,7 @@ Flood risk visualization
 
 The model learns the relationship between **terrain shape and rainfall patterns** to predict **flood depth maps**.
 
-## Example Results
+## Flood Prediction Examples
 
 The trained model produces terrain-aware flood prediction maps.
 
@@ -46,13 +46,26 @@ Each prediction visualization shows:
 
 These results demonstrate that **TwinMind-Disaster is a working terrain-aware flood prediction pipeline**.
 
+## AI Flood Prediction Results
+
+The trained U-Net model predicts flood depth across the terrain mosaic
+using DEM, slope, and rainfall inputs.
+
+### DEM vs Predicted Flood Depth
+
+![DEM vs Flood](docs/dem_vs_pred_full.png)
+
+### Full Flood Prediction Map
+
+![Predicted Flood](docs/pred_flood_full.png)
+
 ## Model Comparison
 
 We compared a simple CNN baseline with a U-Net architecture.
 
 The U-Net significantly improves spatial flood prediction accuracy and removes ring artifacts observed in the baseline model.
 
-Validation loss improved from **0.0025 → 0.00005** using the U-Net architecture.
+Validation loss improved by an order of magnitude using the U-Net architecture.
 
 ![](docs/model_comparison.png)
 
@@ -119,6 +132,7 @@ Small U-Net
 - rainfall time series (6 timesteps)
 
 **Total input**  
+DEM + Slope + Rain(6) = 8 channels
 DEM + Rain(6) = 7 channels
 
 **Output**  
