@@ -1,234 +1,149 @@
-# 🌊 TwinMind-Disaster
+# TwinMind-Disaster
 
 ## AI Digital Twin for Terrain-Aware Flood Prediction
 
-TwinMind-Disaster is a working prototype demonstrating how **terrain elevation (DEM) + rainfall simulation + deep learning** can generate **AI-predicted flood depth maps**.
+TwinMind-Disaster is a prototype system that integrates terrain data, rainfall simulation, and deep learning to predict flood distribution and support observation strategies.
 
-The project explores the concept of an **AI Digital Twin for disaster prediction**, where terrain information and environmental simulation are combined with machine learning to estimate flood risk before sensors detect it.
-
-Project Demo
-[https://gang0-jpg.github.io/TwinMind-Disaster/](https://gang0-jpg.github.io/TwinMind-Disaster/)
-
-GitHub Repository
-[https://github.com/gang0-jpg/TwinMind-Disaster](https://github.com/gang0-jpg/TwinMind-Disaster)
+This project extends AI Digital Twin concepts from **prediction to decision support**.
 
 ---
 
-## What This Project Demonstrates
+## Overview
 
-TwinMind-Disaster implements the following pipeline
+The system performs the following:
 
-Terrain elevation (DEM)
-↓
-Rainfall simulation
-↓
-Deep learning flood prediction (U-Net)
-↓
-Flood risk visualization
+* Predict flood depth from terrain (DEM) and rainfall
+* Estimate uncertainty in model predictions
+* Use uncertainty to guide sensor placement
 
-The model learns the relationship between **terrain shape and rainfall patterns** to predict **flood depth maps**.
+This system places sensors where the model is uncertain.
 
 ---
 
-## Example Results
+## Background
 
-The trained model produces terrain-aware flood prediction maps.
+Conventional flood prediction approaches:
 
-![](docs/case_000001_pred.png)
+* Focus primarily on improving prediction accuracy
+* Do not explicitly quantify uncertainty
+* Do not connect prediction results to sensor deployment
 
-![](docs/case_000002_pred.png)
-
-![](docs/case_000003_pred.png)
-
-Each prediction visualization shows
-
-1. terrain elevation (DEM)
-2. rainfall input
-3. ground truth flood simulation
-4. AI predicted flood depth
-5. prediction error
-
-These results demonstrate that **TwinMind-Disaster is a working terrain-aware flood prediction pipeline**.
+TwinMind-Disaster addresses these gaps by integrating uncertainty into the decision loop.
 
 ---
 
-## System Architecture
+## Approach
 
-The prototype integrates terrain data, rainfall simulation and deep learning.
+Predict → Uncertainty → Sensor Placement → Observe → Update
 
-Terrain data
-↓
-Terrain processing
-↓
-Deep learning model (U-Net)
-↓
-Flood depth prediction
-↓
-Digital twin visualization
-
-This architecture demonstrates how terrain understanding can be integrated with AI to simulate disaster impact.
+This closed loop enables adaptive and efficient observation.
 
 ---
 
-## Dashboard
+## Core Components
 
-The prototype dashboard visualizes
+| Component           | Role             | Description                                                |
+| ------------------- | ---------------- | ---------------------------------------------------------- |
+| U-Net               | Spatial modeling | Flood depth prediction from terrain and rainfall           |
+| Reservoir Computing | Feature support  | Auxiliary temporal representation for structural stability |
+| MC Dropout          | Uncertainty      | Mean and variance estimation via Monte Carlo inference     |
+| Sensor Placement    | Decision layer   | Optimize observation points based on uncertainty           |
 
-• terrain elevation
-• predicted flood areas
-• model uncertainty
-• digital twin terrain map
+---
 
-Run locally
+## Results
 
+| Metric            | Improvement                    |
+| ----------------- | ------------------------------ |
+| MAE               | -16.4%                         |
+| IoU               | +25.6%                         |
+| Sensor Efficiency | +89.4% (6.68× efficiency gain) |
+| Uncertainty       | 3.1× reduction per cycle       |
+
+---
+
+## System Flow
+
+Terrain + Rainfall
+↓
+U-Net + Reservoir
+↓
+Flood Prediction
+↓
+MC Dropout
+↓
+Uncertainty Map
+↓
+Sensor Placement
+↓
+Observation
+↓
+Update
+
+---
+
+## Visualization & Dashboard
+
+Run locally:
+
+```bash
 streamlit run ui/twinmind_dashboard.py
+```
+
+The dashboard visualizes:
+
+* DEM terrain
+* Flood prediction map
+* Uncertainty map (MC Dropout)
+* Sensor placement decisions
 
 ---
 
-## Key Components
+## Implementation
 
-### Terrain Processing
-
-Terrain elevation data is processed from DEM.
-
-Processing pipeline
-
-DEM XML
-↓
-NumPy grid conversion
-↓
-DEM mosaic
-↓
-Resize to 64×64
-↓
-Training dataset
-
-Generated datasets
-
-data/dem_npy_grid
-dem_for_training.npy
-slope_for_training.npy
+* PyTorch
+* Reservoir module
+* MC Dropout
+* Streamlit
+* MLflow
 
 ---
 
-### Flood Prediction Model
+## Environment
 
-Model architecture
-Small U-Net
-
-Input channels
-
-DEM terrain elevation
-rainfall time series (6 timesteps)
-
-Total input
-
-DEM + Rain(6) = 7 channels
-
-Output
-
-Flood depth map
-
-Training script
-
-scripts/train_unet.py
-
----
-
-### Experiment Tracking
-
-Experiments are tracked using MLflow.
-
-Run MLflow UI
-
-mlflow ui
-
-Open in browser
-
-[http://localhost:5000](http://localhost:5000)
-
----
-
-## Project Structure
-
-TwinMind-Disaster
-
-data
-scripts
-twinmind_disaster
-ui
-docs
-mlruns
-runs
-README.md
-requirements.txt
-
----
-
-## Installation
-
-Clone repository
-
-git clone [https://github.com/gang0-jpg/TwinMind-Disaster.git](https://github.com/gang0-jpg/TwinMind-Disaster.git)
-cd TwinMind-Disaster
-
-Install dependencies
-
-pip install -r requirements.txt
-
-Main dependencies
-
-numpy
-torch
-mlflow
-streamlit
-matplotlib
-scipy
-
----
-
-## Training
-
-Run training
-
-python scripts/train_unet.py --data_dir data/cases --epochs 10 --batch_size 4
-
-Training results are automatically logged in MLflow.
+* NVIDIA A5000 (local inference)
+* io.net / io.cloud (H100 GPU infrastructure)
 
 ---
 
 ## Data Source
 
-Terrain data is provided by
-
 Geospatial Information Authority of Japan (GSI)
-[https://www.gsi.go.jp/kiban/](https://www.gsi.go.jp/kiban/)
+https://www.gsi.go.jp/kiban/
 
-Dataset
-
-Basic Map Information DEM
-
-Note: DEM data is **not included in this repository**.
+* Dataset: Numerical Elevation Model (DEM)
+* Map reference: GSI Maps
 
 ---
 
-## TwinMind Vision
+## Project Structure
 
-TwinMind aims to become a
+```
+TwinMind-Disaster/
+├── data/
+├── scripts/
+├── docs/
+├── ui/
+├── models/
+├── README.md
+└── requirements.txt
+```
 
-Reality Operating System for Earth
+---
 
-A platform where AI continuously learns from
+## Demo
 
-terrain
-climate
-sensor networks
-
-to
-
-predict disasters
-simulate environmental change
-optimize observation networks
+https://gang0-jpg.github.io/TwinMind-Disaster/
 
 ---
 
@@ -236,18 +151,9 @@ optimize observation networks
 
 MIT License
 
-Copyright (c) 2024-2026 Zenji Oka
-
 ---
 
 ## Author
 
 Zenji Oka
-Creator of TwinMind
-
-GitHub
-[https://github.com/gang0-jpg](https://github.com/gang0-jpg)
-
----
-
-Predicting water, protecting life. 🌊
+https://github.com/gang0-jpg

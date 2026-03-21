@@ -1,906 +1,1016 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TwinMind-Disaster - AI Digital Twin for Flood Prediction</title>
-    <meta name="description" content="AI Digital Twin platform for flood prediction and terrain-aware disaster monitoring using U-Net deep learning">
-    <meta property="og:title" content="TwinMind-Disaster">
-    <meta property="og:description" content="AI Digital Twin for Flood Prediction">
-    <meta property="og:image" content="dashboard.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TwinMind-Disaster | AI Decision System for Flood Prediction</title>
+  <style>
+    :root {
+      --primary: #0a2540;
+      --secondary: #1a4d7a;
+      --accent: #00c1d4;
+      --accent-dark: #008a99;
+      --light: #f8fbff;
+      --gray: #64748b;
+      --success: #16a34a;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+      --border-radius: 12px;
+      --transition: all 0.3s ease;
+    }
 
-    <!-- Mermaid.js for dynamic diagrams -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script>
-        mermaid.initialize({
-            startOnLoad: true,
-            theme: 'default',
-            securityLevel: 'loose',
-            flowchart: {
-                useMaxWidth: true,
-                htmlLabels: true,
-                curve: 'basis'
-            }
-        });
-    </script>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: var(--primary);
+      background: var(--light);
+      overflow-x: hidden;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      padding: 4.5rem 0 3.5rem;
+      text-align: center;
+      position: relative;
+    }
 
-        .main-content {
-            background: white;
-            border-radius: 12px;
-            padding: 60px 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
+    .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
 
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            color: #2d3748;
-            border-bottom: 4px solid #667eea;
-            padding-bottom: 15px;
-        }
+    .hero h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
 
-        .tagline {
-            font-size: 1.3em;
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
+    .hero .subtitle {
+      font-size: 1.3rem;
+      font-weight: 300;
+      opacity: 0.95;
+      margin-bottom: 1.5rem;
+    }
 
-        h2 {
-            font-size: 1.8em;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            color: #4a5568;
-            border-left: 5px solid #667eea;
-            padding-left: 15px;
-        }
+    .hero-tagline {
+      background: rgba(255, 255, 255, 0.15);
+      display: inline-block;
+      padding: 0.4rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      backdrop-filter: blur(4px);
+    }
 
-        h3 {
-            font-size: 1.4em;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            color: #553c9a;
-        }
+    /* Core Message Banner */
+    .core-message {
+      background: var(--card-bg);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.5rem;
+      margin: -1.5rem auto 2.5rem;
+      max-width: 800px;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      box-shadow: var(--shadow);
+      font-size: 1.05rem;
+      color: var(--secondary);
+      font-weight: 500;
+      position: relative;
+      z-index: 2;
+    }
 
-        p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
+    .core-message strong { color: var(--accent-dark); }
 
-        ul {
-            margin: 10px 0 15px 22px;
-        }
+    /* Key Message Banner - Subtle */
+    .key-message {
+      background: var(--card-bg);
+      border: 1px solid rgba(0, 193, 212, 0.3);
+      border-left: 4px solid var(--accent);
+      color: var(--primary);
+      text-align: center;
+      padding: 1rem 1.5rem;
+      margin: 2rem 0;
+      border-radius: var(--border-radius);
+      font-size: 1.15rem;
+      font-weight: 500;
+      box-shadow: var(--shadow);
+    }
 
-        li {
-            margin-bottom: 8px;
-        }
+    /* Section Styling */
+    section { padding: 3.5rem 0; }
+    section:nth-child(even) { background: white; }
+    section:nth-child(odd):not(.hero) { background: var(--light); }
 
-        .intro-box {
-            background: #f7fafc;
-            border-left: 5px solid #667eea;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 0 8px 8px 0;
-        }
+    .section-title {
+      text-align: center;
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+      page-break-after: avoid;
+      break-after: avoid;
+    }
 
-        .goal-box {
-            background: #ebf8ff;
-            border-left: 5px solid #4299e1;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 0 8px 8px 0;
-            font-weight: 600;
-        }
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: -10px; left: 50%;
+      transform: translateX(-50%);
+      width: 60px; height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
 
-        .scope-notice {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border: 2px solid #f59e0b;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 25px 0;
-            text-align: center;
-            font-weight: 600;
-            color: #92400e;
-        }
+    /* Decision Loop Diagram - Print Safe */
+    .loop-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 2.5rem 0;
+      position: relative;
+      min-height: 380px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
-        .button-group {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin: 20px 0;
-        }
+    .loop-diagram {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
-        .demo-link, .github-link {
-            display: inline-block;
-            padding: 12px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
+    .loop-circle {
+      position: absolute;
+      width: 100%; height: 100%;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      opacity: 0.6;
+    }
 
-        .demo-link {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
+    .loop-step {
+      position: absolute;
+      width: 100px;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 0.8rem 0.6rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      font-weight: 600;
+      font-size: 0.88rem;
+      z-index: 2;
+      border: 1px solid rgba(0,0,0,0.08);
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
-        .github-link {
-            background: #24292e;
-            color: white;
-        }
+    .step-1 { top: 0; left: 50%; transform: translateX(-50%); }
+    .step-2 { top: 22%; right: 5%; transform: translateY(-50%); }
+    .step-3 { bottom: 22%; right: 5%; transform: translateY(50%); }
+    .step-4 { bottom: 0; left: 50%; transform: translateX(-50%); }
+    .step-5 { top: 22%; left: 5%; transform: translate(-50%, -50%); }
 
-        .demo-link:hover, .github-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
+    .loop-arrow {
+      position: absolute;
+      font-size: 1.1rem;
+      color: var(--accent-dark);
+      z-index: 1;
+      font-weight: 500;
+    }
 
-        .mermaid {
-            background: #f7fafc;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-            overflow-x: auto;
-        }
+    .arrow-1 { top: 18%; right: 28%; transform: rotate(35deg); }
+    .arrow-2 { right: 18%; bottom: 32%; transform: rotate(125deg); }
+    .arrow-3 { bottom: 18%; left: 28%; transform: rotate(215deg); }
+    .arrow-4 { left: 18%; top: 32%; transform: rotate(305deg); }
 
-        .mermaid svg {
-            max-width: 100%;
-            height: auto;
-        }
+    /* Architecture Section - Print Safe */
+    .architecture-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
 
-        .image-panel {
-            text-align: center;
-            margin: 30px 0;
-        }
+    .arch-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.2rem 1rem;
+      box-shadow: var(--shadow);
+      text-align: center;
+      border-top: 3px solid var(--accent);
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
-        .image-panel img {
-            max-width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
-        }
+    .arch-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.7rem;
+      color: var(--accent);
+    }
 
-        .image-caption {
-            margin-top: 12px;
-            font-size: 0.95em;
-            color: #718096;
-        }
+    .arch-card h4 {
+      margin: 0.4rem 0 0.3rem;
+      font-weight: 600;
+      font-size: 0.98rem;
+    }
 
-        .pipeline {
-            background: #fffaf0;
-            border: 2px solid #f6ad55;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            font-family: 'Courier New', monospace;
-            white-space: pre;
-            overflow-x: auto;
-        }
+    .arch-card p {
+      color: var(--gray);
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
 
-        code {
-            background: #edf2f7;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            color: #e53e3e;
-        }
+    .arch-highlight {
+      background: rgba(0, 193, 212, 0.06);
+    }
 
-        pre {
-            background: #2d3748;
-            color: #e2e8f0;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 20px 0;
-        }
+    /* Demo Section - Print Safe */
+    .demo-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
-        pre code {
-            background: none;
-            color: inherit;
-            padding: 0;
-        }
+    .demo-frame {
+      width: 100%;
+      max-width: 920px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,0.1);
+      background: white;
+      overflow: hidden;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    .demo-header {
+      background: #f1f5f9;
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
 
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-        }
+    .demo-dots { display: flex; gap: 0.35rem; }
+    .demo-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .demo-dot.red { background: #ef4444; }
+    .demo-dot.yellow { background: #f59e0b; }
+    .demo-dot.green { background: #10b981; }
 
-        th {
-            background: #667eea;
-            color: white;
-            font-weight: 600;
-        }
+    .demo-title {
+      font-size: 0.82rem;
+      color: var(--gray);
+      font-weight: 500;
+      margin-left: 0.3rem;
+    }
 
-        tr:hover {
-            background: #f7fafc;
-        }
+    .demo-content {
+      min-height: 420px;
+      background: var(--light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+    }
 
-        .file-tree {
-            background: #f7fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 20px;
-            font-family: 'Courier New', monospace;
-            margin: 20px 0;
-            white-space: pre;
-            overflow-x: auto;
-        }
+    .demo-content img {
+      width: 100%;
+      height: auto;
+      max-width: 920px;
+      display: block;
+      border-radius: 8px;
+    }
 
-        .gsi-attribution {
-            background: #fffbeb;
-            border: 2px solid #fbbf24;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
+    .demo-caption {
+      text-align: center;
+      max-width: 700px;
+      margin: 1rem auto 0;
+      color: var(--gray);
+      font-size: 0.93rem;
+    }
 
-        .gsi-attribution strong {
-            color: #d97706;
-            display: block;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
+    /* Results Section - Print Safe */
+    .results-highlight {
+      text-align: center;
+      margin-bottom: 1.8rem;
+    }
 
-        .vision-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin: 30px 0;
-            text-align: center;
-        }
+    .results-highlight p {
+      font-size: 1.05rem;
+      color: var(--secondary);
+      font-weight: 500;
+    }
 
-        .vision-box blockquote {
-            font-size: 1.3em;
-            font-style: italic;
-            margin: 20px 0;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            border-left: 4px solid white;
-        }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
 
-        .status-complete {
-            color: #48bb78;
-            font-weight: bold;
-        }
+    .metric-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.4rem 1.2rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border-top: 3px solid var(--accent);
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
-        .status-progress {
-            color: #ed8936;
-            font-weight: bold;
-        }
+    .metric-label {
+      color: var(--gray);
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin-bottom: 0.4rem;
+    }
 
-        .status-planned {
-            color: #a0aec0;
-            font-weight: bold;
-        }
+    .metric-value {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin: 0.3rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+    }
 
-        .author-section {
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 30px 0;
-            text-align: center;
-        }
+    .metric-value .trend-down { color: var(--success); font-size: 1.2rem; }
+    .metric-value .trend-up { color: var(--accent-dark); font-size: 1.2rem; }
 
-        .author-section a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-        }
+    .metric-desc {
+      font-size: 0.83rem;
+      color: var(--gray);
+      margin-top: 0.3rem;
+      line-height: 1.35;
+    }
 
-        .author-section a:hover {
-            text-decoration: underline;
-        }
+    /* Vision Section */
+    .vision-content {
+      max-width: 750px;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 1.08rem;
+      line-height: 1.6;
+    }
 
-        .quote {
-            font-style: italic;
-            text-align: center;
-            color: #718096;
-            margin: 30px 0;
-            padding: 20px;
-            border-top: 2px solid #e2e8f0;
-            border-bottom: 2px solid #e2e8f0;
-        }
+    .vision-highlight {
+      color: var(--accent-dark);
+      font-weight: 600;
+    }
 
-        .emoji {
-            font-size: 1.2em;
-        }
+    /* Footer */
+    footer {
+      background: var(--primary);
+      color: rgba(255,255,255,0.85);
+      padding: 1.8rem 0 1rem;
+      text-align: center;
+      font-size: 0.88rem;
+    }
 
-        .dashboard-preview {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border: 3px dashed #667eea;
-            border-radius: 12px;
-            padding: 30px 20px;
-            text-align: center;
-            margin: 30px 0;
-            color: #4a5568;
-            position: relative;
-            overflow: hidden;
-        }
+    .tech-credits {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0;
+      font-weight: 500;
+      font-size: 0.88rem;
+    }
 
-        .dashboard-preview::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
+    .tech-credits span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
 
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
+    .tech-credits span::before {
+      content: "•";
+      color: var(--accent);
+      font-weight: bold;
+    }
 
-        .dashboard-preview img {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            position: relative;
-            z-index: 1;
-        }
+    .copyright {
+      opacity: 0.8;
+      margin-top: 0.6rem;
+      font-size: 0.83rem;
+    }
 
-        .dashboard-placeholder-text {
-            font-size: 1.1em;
-            position: relative;
-            z-index: 1;
-            margin-bottom: 20px;
-        }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.1rem; }
+      .hero .subtitle { font-size: 1.15rem; }
+      .key-message { font-size: 1.05rem; }
+      .core-message { font-size: 0.95rem; margin: -1rem auto 2rem; }
+      .loop-diagram { width: 270px; height: 270px; }
+      .loop-step { width: 90px; font-size: 0.82rem; padding: 0.7rem 0.4rem; }
+      .metric-value { font-size: 1.65rem; }
+      section { padding: 2.8rem 0; }
+    }
 
-        .dashboard-instruction {
-            background: #ebf8ff;
-            border-left: 4px solid #4299e1;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 0 8px 8px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-        }
+    @media (max-width: 480px) {
+      .container { padding: 0 1.3rem; }
+      .hero { padding: 3rem 0 2.5rem; }
+      .hero h1 { font-size: 1.8rem; }
+      .section-title { font-size: 1.6rem; }
+      .loop-diagram { width: 240px; height: 240px; }
+      .loop-step { width: 80px; font-size: 0.76rem; }
+      .metric-value { font-size: 1.5rem; }
+      .demo-content { min-height: 320px; }
+    }
 
-        .highlight-box {
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-            border: 2px solid #667eea;
-            border-radius: 12px;
-            padding: 25px;
-            margin: 25px 0;
-        }
+    /* Subtle animation */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        .highlight-box h4 {
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
+    .animate { animation: fadeInUp 0.5s ease forwards; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
 
-        a {
-            color: #4c51bf;
-        }
+    /* ========== PRINT/PDF STYLES - OPTIMIZED ========== */
+    @media print {
+      /* Disable all animations for print */
+      .animate {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
 
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 30px 20px;
-            }
+      /* Prevent page breaks inside key elements */
+      .demo-frame,
+      .arch-card,
+      .metric-card,
+      .loop-diagram,
+      .loop-container,
+      .core-message,
+      .key-message,
+      .metrics-grid,
+      .architecture-grid {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        break-after: avoid !important;
+      }
 
-            h1 {
-                font-size: 2em;
-            }
+      /* Keep sections together - prevent orphan content */
+      section {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
 
-            h2 {
-                font-size: 1.5em;
-            }
+      /* Keep footer with last section */
+      #vision, footer {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
 
-            .button-group {
-                flex-direction: column;
-            }
+      footer {
+        page-break-before: avoid;
+        break-before: avoid;
+      }
 
-            table {
-                font-size: 0.9em;
-            }
-        }
-    </style>
+      /* Reduce excessive vertical whitespace */
+      .hero {
+        padding: 2rem 0 1.5rem !important;
+      }
+
+      section {
+        padding: 1.5rem 0 !important;
+      }
+
+      .section-title {
+        margin-bottom: 1.2rem !important;
+        font-size: 1.5rem !important;
+      }
+
+      .section-title::after {
+        bottom: -6px !important;
+        height: 3px !important;
+      }
+
+      /* Reduce hero height for print */
+      .hero h1 {
+        font-size: 1.8rem !important;
+        margin-bottom: 0.5rem !important;
+      }
+
+      .hero .subtitle {
+        font-size: 1rem !important;
+        margin-bottom: 0.8rem !important;
+      }
+
+      .hero-tagline {
+        font-size: 0.85rem !important;
+        padding: 0.3rem 0.8rem !important;
+      }
+
+      /* Reduce banner margins */
+      .core-message {
+        margin: -0.8rem auto 1.2rem !important;
+        padding: 0.7rem 1rem !important;
+        font-size: 0.95rem !important;
+      }
+
+      .key-message {
+        margin: 1rem 0 !important;
+        padding: 0.8rem 1rem !important;
+        font-size: 1rem !important;
+      }
+
+      /* Reduce loop diagram size */
+      .loop-container {
+        margin: 1.2rem 0 !important;
+        min-height: 280px !important;
+      }
+
+      .loop-diagram {
+        width: 240px !important;
+        height: 240px !important;
+      }
+
+      .loop-step {
+        width: 85px !important;
+        font-size: 0.75rem !important;
+        padding: 0.5rem 0.3rem !important;
+      }
+
+      .loop-arrow {
+        font-size: 0.9rem !important;
+      }
+
+      /* Reduce architecture card padding */
+      .architecture-grid {
+        gap: 0.6rem !important;
+        margin-top: 0.8rem !important;
+      }
+
+      .arch-card {
+        padding: 0.8rem 0.6rem !important;
+      }
+
+      .arch-icon {
+        font-size: 1.4rem !important;
+        margin-bottom: 0.4rem !important;
+      }
+
+      .arch-card h4 {
+        font-size: 0.88rem !important;
+        margin: 0.2rem 0 !important;
+      }
+
+      .arch-card p {
+        font-size: 0.78rem !important;
+        line-height: 1.3 !important;
+      }
+
+      /* Reduce demo section size */
+      .demo-wrapper {
+        margin: 1rem 0 !important;
+      }
+
+      .demo-content {
+        min-height: 320px !important;
+        padding: 0.3rem !important;
+      }
+
+      .demo-header {
+        padding: 0.4rem 0.6rem !important;
+      }
+
+      .demo-title {
+        font-size: 0.75rem !important;
+      }
+
+      .demo-caption {
+        margin: 0.6rem auto 0 !important;
+        font-size: 0.83rem !important;
+      }
+
+      /* Reduce metrics section spacing */
+      .results-highlight {
+        margin-bottom: 1rem !important;
+      }
+
+      .results-highlight p {
+        font-size: 0.93rem !important;
+      }
+
+      .metrics-grid {
+        gap: 0.6rem !important;
+        margin-top: 0.8rem !important;
+      }
+
+      .metric-card {
+        padding: 0.9rem 0.8rem !important;
+      }
+
+      .metric-label {
+        font-size: 0.83rem !important;
+        margin-bottom: 0.2rem !important;
+      }
+
+      .metric-value {
+        font-size: 1.4rem !important;
+        margin: 0.2rem 0 !important;
+      }
+
+      .metric-value .trend-down,
+      .metric-value .trend-up {
+        font-size: 1rem !important;
+      }
+
+      .metric-desc {
+        font-size: 0.75rem !important;
+        margin-top: 0.2rem !important;
+      }
+
+      /* Reduce vision section */
+      .vision-content {
+        font-size: 0.95rem !important;
+        line-height: 1.5 !important;
+      }
+
+      .vision-highlight {
+        font-weight: 600 !important;
+      }
+
+      /* Improve text contrast for colored sections */
+      .hero {
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: 2px solid var(--primary) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .hero h1,
+      .hero .subtitle,
+      .hero .hero-tagline {
+        color: #000000 !important;
+      }
+
+      .hero-tagline {
+        background: #e8e8e8 !important;
+        color: #000000 !important;
+      }
+
+      #vision {
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: 2px solid var(--primary) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      #vision .section-title,
+      #vision .vision-content,
+      #vision .vision-highlight {
+        color: #000000 !important;
+      }
+
+      /* Remove shadows for cleaner print */
+      .demo-frame,
+      .arch-card,
+      .metric-card,
+      .core-message,
+      .key-message {
+        box-shadow: none !important;
+        border: 1px solid #cccccc !important;
+      }
+
+      /* Ensure images print properly */
+      .demo-content img {
+        max-width: 100% !important;
+        height: auto !important;
+        page-break-inside: avoid !important;
+      }
+
+      /* Simplify decorative elements */
+      .section-title::after {
+        background: #000000 !important;
+      }
+
+      .demo-dots {
+        display: none;
+      }
+
+      /* Remove central loop arrow for cleaner print */
+      .arrow-5 {
+        display: none;
+      }
+
+      /* Footer styling for print - compact */
+      footer {
+        background: #f5f5f5 !important;
+        color: #000000 !important;
+        padding: 1rem 0 0.5rem !important;
+        margin-top: 0.5rem !important;
+        border-top: 1px solid #cccccc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .tech-credits {
+        gap: 0.6rem !important;
+        margin: 0.5rem 0 !important;
+        font-size: 0.78rem !important;
+      }
+
+      .tech-credits span::before {
+        color: #000000 !important;
+      }
+
+      .copyright {
+        margin-top: 0.3rem !important;
+        font-size: 0.75rem !important;
+      }
+
+      /* Container padding for print */
+      .container {
+        padding: 0 1rem !important;
+      }
+
+      /* Proper page margins - compact */
+      @page {
+        margin: 1.2cm 1cm;
+        size: A4;
+      }
+
+      /* Base body for print */
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 10pt !important;
+        line-height: 1.4 !important;
+      }
+
+      /* Remove gradients for faster printing */
+      .hero,
+      #vision {
+        background: #ffffff !important;
+        border: 2px solid var(--primary) !important;
+      }
+
+      /* Prevent widows and orphans */
+      p, h1, h2, h3, h4, h5, h6 {
+        orphans: 2;
+        widows: 2;
+      }
+
+      /* Ensure last section and footer stay together */
+      #vision + footer {
+        page-break-before: avoid !important;
+        break-before: avoid !important;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="main-content">
-            <h1>🌊 TwinMind-Disaster</h1>
-            <div class="tagline">AI Digital Twin for Flood Prediction</div>
-
-            <div class="scope-notice">
-                This repository is an early flood-prediction prototype of the broader TwinMind vision.
-            </div>
-
-            <p><strong>TwinMind-Disaster</strong> is a research prototype demonstrating how <strong>AI Digital Twin technology</strong> can be applied to <strong>flood prediction and terrain-aware disaster monitoring</strong>.</p>
-
-            <div class="intro-box">
-                <p><strong>The system integrates:</strong></p>
-                <ul>
-                    <li><span class="emoji">🗺️</span> Terrain data (DEM)</li>
-                    <li><span class="emoji">🤖</span> Deep learning (U-Net)</li>
-                    <li><span class="emoji">🌐</span> Digital Twin visualization</li>
-                    <li><span class="emoji">📡</span> Sensor placement optimization</li>
-                </ul>
-            </div>
-
-            <div class="goal-box">
-                <span class="emoji">🎯</span> <strong>Goal</strong>: Explore a future <strong>AI-driven disaster observation infrastructure</strong>.
-            </div>
-
-            <h2><span class="emoji">🎬</span> Demo & Code</h2>
-            <div class="button-group">
-                <a href="https://gang0-jpg.github.io/TwinMind-Disaster/" class="demo-link">🔗 Project Website</a>
-                <a href="https://github.com/gang0-jpg/TwinMind-Disaster" class="github-link">💻 GitHub Repository</a>
-            </div>
-
-            <h2><span class="emoji">💡</span> TwinMind Concept</h2>
-            <p><strong>TwinMind</strong> is an <strong>AI Digital Twin platform</strong>.</p>
-
-            <div class="intro-box">
-                <p>Instead of humans deciding where to observe, <strong>AI determines optimal observation locations</strong>.</p>
-            </div>
-
-            <h3><span class="emoji">🔄</span> System Flow</h3>
-            <div class="mermaid">
-graph TD
-    A[🗺️ DEM Terrain Data] --> B[⚙️ Terrain Processing]
-    B --> C[🤖 U-Net Flood Prediction]
-    C --> D[📊 Risk Estimation]
-    D --> E[📡 Sensor Optimization]
-    E --> F[🖥️ Digital Twin Dashboard]
-
-    style A fill:#e3f2fd,stroke:#1976d2
-    style C fill:#e8f5e9,stroke:#388e3c
-    style F fill:#fff3e0,stroke:#f57c00
-            </div>
-
-            <p><em>This prototype focuses on flood prediction using terrain data.</em></p>
-
-            <h2><span class="emoji">🏗️</span> TwinMind System Architecture</h2>
-            <div class="mermaid">
-graph LR
-    subgraph Data_Layer["📦 Data Layer"]
-        D1[🗺️ DEM]
-        D2[🛰️ Satellite]
-        D3[🌧️ Rainfall]
-        D4[📡 IoT Sensors]
-    end
-
-    subgraph Observation_Layer["🔍 TwinMind Observation Layer"]
-        O1[Data Ingestion]
-        O2[Preprocessing]
-        O3[Feature Extraction]
-    end
-
-    subgraph AI_Layer["🧠 AI Prediction Layer"]
-        A1[U-Net Flood Model]
-        A2[Risk Estimation]
-        A3[Uncertainty Quantification]
-    end
-
-    subgraph Decision_Layer["⚡ Decision Layer"]
-        Dec1[Sensor Placement Optimization]
-        Dec2[Alert Generation]
-        Dec3[Resource Allocation]
-    end
-
-    subgraph UI_Layer["🖥️ Digital Twin UI"]
-        U1[Terrain Visualization]
-        U2[Flood Risk Heatmap]
-        U3[Real-time Monitoring]
-        U4[Simulation Playback]
-    end
-
-    Data_Layer --> Observation_Layer
-    Observation_Layer --> AI_Layer
-    AI_Layer --> Decision_Layer
-    Decision_Layer --> UI_Layer
-
-    style Data_Layer fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style Observation_Layer fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style AI_Layer fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style Decision_Layer fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    style UI_Layer fill:#e0f7fa,stroke:#00838f,stroke-width:2px
-            </div>
-
-            <div class="image-panel">
-                <img src="architecture.png" alt="TwinMind System Architecture">
-                <div class="image-caption">Visual system architecture for TwinMind-Disaster</div>
-            </div>
-
-            <h2><span class="emoji">✨</span> Features</h2>
-
-            <h3><span class="emoji">🗂️</span> Terrain Processing (DEM)</h3>
-            <p>Terrain elevation data is processed from DEM XML files.</p>
-
-            <p><strong>Processing Pipeline:</strong></p>
-            <div class="pipeline">DEM XML
-   ↓
-Grid conversion (NumPy)
-   ↓
-Mosaic generation
-   ↓
-Resize to 64×64
-   ↓
-Training dataset</div>
-
-            <p><strong>Generated Datasets:</strong></p>
-            <ul>
-                <li><code>data/dem_npy_grid/dem_for_training.npy</code></li>
-                <li><code>data/dem_npy_grid/slope_for_training.npy</code></li>
-            </ul>
-
-            <h3><span class="emoji">🌊</span> Flood Prediction Model</h3>
-            <p><strong>Prototype model:</strong> Small U-Net</p>
-
-            <p><strong>Architecture:</strong></p>
-            <div class="pipeline">Conv2d(1,16) → Conv2d(16,16) → Conv2d(16,1)</div>
-
-            <p><strong>Input:</strong></p>
-            <ul>
-                <li>DEM (Digital Elevation Model)</li>
-                <li>Slope</li>
-            </ul>
-
-            <p><strong>Training script:</strong> <code>scripts/train_unet.py</code></p>
-
-            <h3><span class="emoji">📊</span> Experiment Tracking</h3>
-            <p>Experiments are tracked using <strong>MLflow</strong>.</p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Parameter</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>use_dem</code></td>
-                        <td>Use DEM data as input</td>
-                    </tr>
-                    <tr>
-                        <td><code>use_slope</code></td>
-                        <td>Use slope data as input</td>
-                    </tr>
-                    <tr>
-                        <td><code>epochs</code></td>
-                        <td>Number of training epochs</td>
-                    </tr>
-                    <tr>
-                        <td><code>batch_size</code></td>
-                        <td>Batch size for training</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <p><strong>Experiment logs:</strong> <code>mlruns/</code></p>
-
-            <h3><span class="emoji">🖥️</span> Digital Twin Dashboard</h3>
-            <p><strong>Prototype dashboard:</strong> <code>ui/twinmind_dashboard.py</code></p>
-
-            <div class="dashboard-preview">
-                <p class="dashboard-placeholder-text">
-                    <span class="emoji">🖼️</span> <strong>Dashboard Preview</strong><br><br>
-                    <em>Interactive flood risk visualization and terrain analysis</em>
-                </p>
-
-                <img src="dashboard.png" alt="TwinMind Dashboard Screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-
-                <div style="display:none; margin-top: 20px; padding: 20px; background: white; border-radius: 8px; position: relative; z-index: 1;">
-                    <span class="emoji">📷</span> Screenshot will appear here<br><br>
-                    <div class="dashboard-instruction">
-                        <strong>To add screenshot:</strong><br>
-                        1. Run: <code>streamlit run ui/twinmind_dashboard.py</code><br>
-                        2. Take screenshot<br>
-                        3. Save as: <code>dashboard.png</code><br>
-                        4. Git push
-                    </div>
-                </div>
-            </div>
-
-            <p><strong>Future capabilities:</strong></p>
-            <ul>
-                <li><span class="emoji">🏔️</span> Terrain visualization</li>
-                <li><span class="emoji">🔥</span> Flood risk heatmap</li>
-                <li><span class="emoji">📡</span> Real-time sensor integration</li>
-                <li><span class="emoji">▶️</span> Simulation playback</li>
-            </ul>
-
-            <h2><span class="emoji">🌊</span> AI Flood Prediction Examples</h2>
-            <p>
-                The trained U-Net baseline predicts flood depth from <strong>DEM</strong> and
-                <strong>rainfall time series</strong>. Below are example outputs generated from
-                real case data on the A5000 server.
-            </p>
-
-            <div class="highlight-box">
-                <h4><span class="emoji">🧠</span> What each panel shows</h4>
-                <p>
-                    Each prediction image contains five panels:
-                    <strong>DEM</strong>, <strong>Rain t0</strong>,
-                    <strong>Ground Truth Flood</strong>,
-                    <strong>Predicted Flood</strong>, and
-                    <strong>Absolute Error</strong>.
-                </p>
-            </div>
-
-            <div class="image-panel">
-                <img src="case_000001_pred.png" alt="AI Flood Prediction Example Case 1">
-                <div class="image-caption">
-                    Case 1: Terrain-aware flood prediction result from the trained U-Net model
-                </div>
-            </div>
-
-            <div class="image-panel">
-                <img src="case_000002_pred.png" alt="AI Flood Prediction Example Case 2">
-                <div class="image-caption">
-                    Case 2: Example prediction with DEM, rainfall input, ground truth, prediction, and error map
-                </div>
-            </div>
-
-            <div class="image-panel">
-                <img src="case_000003_pred.png" alt="AI Flood Prediction Example Case 3">
-                <div class="image-caption">
-                    Case 3: Another flood prediction example from the generated case dataset
-                </div>
-            </div>
-
-            <p>
-                These examples demonstrate that TwinMind-Disaster is not only a concept demo,
-                but a working <strong>terrain-aware flood prediction pipeline</strong> with
-                training, experiment tracking, and visual inference outputs.
-            </p>
-
-            <h2><span class="emoji">📁</span> Project Structure</h2>
-            <div class="file-tree">TwinMind-Disaster/
-│
-├─ data/
-│   ├─ raw_dem/              # Raw DEM data (user-provided)
-│   ├─ dem_xml/              # GSI DEM XML files
-│   └─ dem_npy_grid/         # Processed NumPy arrays
-│       ├─ dem_for_training.npy
-│       └─ slope_for_training.npy
-│
-├─ scripts/
-│   ├─ dem_xml_to_grid_npy.py   # XML → NumPy conversion
-│   ├─ mosaic_dem.py            # DEM mosaic generation
-│   ├─ resize_dem.py            # Resize to 64×64
-│   ├─ make_slope.py            # Slope calculation
-│   └─ train_unet.py            # U-Net training script
-│
-├─ twinmind_disaster/      # Core Python package
-│
-├─ ui/
-│   └─ twinmind_dashboard.py # Streamlit dashboard
-│
-├─ docs/
-│   ├─ index.html          # GitHub Pages demo
-│   ├─ architecture.png     # System architecture image
-│   └─ dashboard.png       # Dashboard screenshot
-│
-├─ mlruns/                 # MLflow experiment logs (auto-generated)
-│
-├─ README.md
-├─ requirements.txt
-└─ .gitignore</div>
-
-            <h2><span class="emoji">⚙️</span> Installation</h2>
-            <pre><code># 1. Clone repository
-git clone https://github.com/gang0-jpg/TwinMind-Disaster.git
-cd TwinMind-Disaster
-
-# 2. Install dependencies
-pip install -r requirements.txt</code></pre>
-
-            <p><strong>requirements.txt</strong> (example):</p>
-            <pre><code>numpy>=1.24.0
-torch>=2.0.0
-mlflow>=2.5.0
-streamlit>=1.28.0
-matplotlib>=3.7.0
-scipy>=1.10.0</code></pre>
-
-            <h2><span class="emoji">🚀</span> Training</h2>
-            <pre><code># Run default training
-python scripts/train_unet.py
-
-# Run with custom parameters
-python scripts/train_unet.py \
-    --epochs 10 \
-    --batch_size 4 \
-    --use_dem True \
-    --use_slope True</code></pre>
-
-            <div class="intro-box">
-                <p><span class="emoji">✅</span> Training results and metrics will be automatically logged in <strong>MLflow</strong>.<br>
-                <span class="emoji">📊</span> View experiments: <code>mlflow ui</code> → open http://localhost:5000</p>
-            </div>
-
-            <h2><span class="emoji">📦</span> Data Source</h2>
-
-            <div class="gsi-attribution">
-                <strong>🗾 Geospatial Information Authority of Japan (GSI)</strong>
-                <p>This project uses terrain data from the <strong>Geospatial Information Authority of Japan (GSI)</strong>.</p>
-                <p><strong>Source:</strong> GSI Basic Map Information DEM (Kiban Chizu Joho / 基盤地図情報)<br>
-                🔗 <a href="https://www.gsi.go.jp/kiban/">https://www.gsi.go.jp/kiban/</a></p>
-                <p style="margin-top: 10px; font-size: 0.9em; color: #92400e;">
-                    <strong>Note:</strong> DEM data is not included in this repository. Users should download the data directly from GSI
-                    and follow GSI terms of use and attribution requirements.
-                </p>
-            </div>
-
-            <h2><span class="emoji">🗓️</span> Roadmap</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Phase</th>
-                        <th>Feature</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>🔹 Phase 1</td>
-                        <td>DEM preprocessing pipeline</td>
-                        <td class="status-complete">✅ Complete</td>
-                    </tr>
-                    <tr>
-                        <td>🔹 Phase 2</td>
-                        <td>U-Net flood prediction prototype</td>
-                        <td class="status-complete">✅ Complete</td>
-                    </tr>
-                    <tr>
-                        <td>🔹 Phase 3</td>
-                        <td>MLflow experiment tracking</td>
-                        <td class="status-complete">✅ Complete</td>
-                    </tr>
-                    <tr>
-                        <td>🔸 Phase 4</td>
-                        <td>Dashboard MVP (Streamlit)</td>
-                        <td class="status-progress">🚧 In Progress</td>
-                    </tr>
-                    <tr>
-                        <td>⚪ Phase 5</td>
-                        <td>Sensor placement optimization</td>
-                        <td class="status-planned">📋 Planned</td>
-                    </tr>
-                    <tr>
-                        <td>⚪ Phase 6</td>
-                        <td>Real-time data ingestion</td>
-                        <td class="status-planned">📋 Planned</td>
-                    </tr>
-                    <tr>
-                        <td>⚪ Phase 7</td>
-                        <td>Advanced U-Net / Transformer architecture</td>
-                        <td class="status-planned">📋 Planned</td>
-                    </tr>
-                    <tr>
-                        <td>⚪ Phase 8</td>
-                        <td>Full TwinMind Digital Twin platform</td>
-                        <td class="status-planned">🔭 Vision</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h2><span class="emoji">🔭</span> TwinMind Vision</h2>
-
-            <div class="vision-box">
-                <h3 style="color: white; margin-bottom: 20px;">Reality Operating System for Earth</h3>
-                <blockquote>
-                    "TwinMind is not just analyzing data.<br>
-                    <strong>It decides where to observe next.</strong>"
-                </blockquote>
-                <p style="margin-top: 20px;">
-                    <strong>TwinMind</strong> aims to become a <strong>Reality Operating System</strong> for Earth observation —
-                    where AI continuously learns from terrain, climate, and sensor data to predict, simulate,
-                    and optimize real-world outcomes.
-                </p>
-            </div>
-
-            <div class="highlight-box">
-                <h4><span class="emoji">💡</span> Key Innovation</h4>
-                <p><strong>AI does not only analyze data. It decides where to observe next.</strong></p>
-                <p>Traditional systems rely on humans to decide observation points. TwinMind uses AI to autonomously determine optimal sensor placement, creating a self-optimizing observation network.</p>
-            </div>
-
-            <p><strong>Potential applications:</strong></p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Domain</th>
-                        <th>Use Case</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="emoji">🚨</span> Disaster Monitoring</td>
-                        <td>Flood, landslide, earthquake risk prediction</td>
-                    </tr>
-                    <tr>
-                        <td><span class="emoji">🌍</span> Climate Observation</td>
-                        <td>Extreme weather modeling & adaptation</td>
-                    </tr>
-                    <tr>
-                        <td><span class="emoji">🏙️</span> Smart Cities</td>
-                        <td>Urban flood resilience planning</td>
-                    </tr>
-                    <tr>
-                        <td><span class="emoji">🏗️</span> Infrastructure</td>
-                        <td>Bridge, dam, and levee health monitoring</td>
-                    </tr>
-                    <tr>
-                        <td><span class="emoji">🌱</span> Environmental Intelligence</td>
-                        <td>Ecosystem change detection & conservation</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h2><span class="emoji">📜</span> License</h2>
-            <p><strong>MIT License</strong><br>
-            Copyright (c) 2024–2026 Zenji Oka</p>
-
-            <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-
-            <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-
-            <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-
-            <div class="author-section">
-                <h2><span class="emoji">👤</span> Author</h2>
-                <p><strong>Zenji Oka</strong><br>
-                <em>Creator of TwinMind | AI Digital Twin Research</em></p>
-                <p>
-                    🔗 <a href="https://github.com/gang0-jpg">GitHub</a><br>
-                    🌐 <a href="https://gang0-jpg.github.io/">Portfolio</a>
-                </p>
-            </div>
-
-            <h2><span class="emoji">🙏</span> Acknowledgements</h2>
-            <ul>
-                <li><span class="emoji">🗾</span> Terrain data provided by <strong>Geospatial Information Authority of Japan (GSI)</strong></li>
-                <li><span class="emoji">🧠</span> U-Net architecture inspired by Ronneberger et al. (2015)</li>
-                <li><span class="emoji">📦</span> Tools: <a href="https://mlflow.org">MLflow</a>, <a href="https://streamlit.io">Streamlit</a>, <a href="https://pytorch.org">PyTorch</a>, <a href="https://mermaid.js.org">Mermaid</a></li>
-                <li><span class="emoji">🌟</span> Special thanks to open-source contributors and disaster resilience researchers worldwide</li>
-            </ul>
-
-            <div class="quote">
-                <p><span class="emoji">🌊</span> <em>"Predicting water, protecting life."</em><br>
-                — TwinMind-Disaster Project</p>
-            </div>
-        </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h1>We place sensors where AI is uncertain.</h1>
+      <p class="subtitle">AI Digital Twin for Terrain-Aware Flood Prediction</p>
+      <div class="hero-tagline">From prediction to intelligent observation</div>
     </div>
+  </section>
+
+  <!-- Core Message -->
+  <div class="container">
+    <div class="core-message animate">
+      This is not only a prediction model. It is an <strong>AI decision system driven by uncertainty</strong>.
+    </div>
+  </div>
+
+  <!-- Key Message Banner -->
+  <div class="container">
+    <div class="key-message animate delay-1">
+      AI does not only predict.<br>
+      It decides where to observe next.
+    </div>
+  </div>
+
+  <!-- System Flow: Decision Loop -->
+  <section id="system-flow">
+    <div class="container">
+      <h2 class="section-title animate">Decision Loop Architecture</h2>
+      <div class="loop-container">
+        <div class="loop-diagram">
+          <div class="loop-circle"></div>
+          
+          <div class="loop-step step-1 animate">Prediction</div>
+          <div class="loop-step step-2 animate delay-1">Uncertainty</div>
+          <div class="loop-step step-3 animate delay-2">Sensor Placement</div>
+          <div class="loop-step step-4 animate delay-3">Observation</div>
+          <div class="loop-step step-5 animate delay-4">Update</div>
+          
+          <div class="loop-arrow arrow-1">↗</div>
+          <div class="loop-arrow arrow-2">↘</div>
+          <div class="loop-arrow arrow-3">↙</div>
+          <div class="loop-arrow arrow-4">↖</div>
+        </div>
+      </div>
+      <p style="text-align: center; max-width: 680px; margin: 1.5rem auto 0; color: var(--gray);" class="animate delay-4">
+        TwinMind-Disaster continuously learns from terrain and sensor data to autonomously optimize observation networks—reducing uncertainty where it matters most.
+      </p>
+    </div>
+  </section>
+
+  <!-- Architecture Section -->
+  <section id="architecture">
+    <div class="container">
+      <h2 class="section-title animate">Hybrid AI Architecture</h2>
+      <div class="architecture-grid">
+        <div class="arch-card arch-highlight animate">
+          <div class="arch-icon">🧠</div>
+          <h4>U-Net Prediction</h4>
+          <p>Lightweight CNN predicts flood depth from terrain + rainfall inputs</p>
+        </div>
+        <div class="arch-card arch-highlight animate delay-1">
+          <div class="arch-icon">🔄</div>
+          <h4>Reservoir Computing</h4>
+          <p>Auxiliary temporal representation to improve structural stability</p>
+        </div>
+        <div class="arch-card arch-highlight animate delay-2">
+          <div class="arch-icon">🎲</div>
+          <h4>MC Dropout</h4>
+          <p>Uncertainty quantification via Monte Carlo inference for risk-aware decisions</p>
+        </div>
+        <div class="arch-card arch-highlight animate delay-3">
+          <div class="arch-icon">🎯</div>
+          <h4>Sensor Placement</h4>
+          <p>AI selects next-best observation points to maximize information gain</p>
+        </div>
+        <div class="arch-card animate delay-4">
+          <div class="arch-icon">🖥️</div>
+          <h4>Digital Twin Dashboard</h4>
+          <p>Real-time visualization: terrain, flood risk, uncertainty, sensors</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo Section - GitHub Pages Safe Image -->
+  <section id="demo">
+    <div class="container">
+      <h2 class="section-title animate">System Dashboard</h2>
+      <div class="demo-wrapper">
+        <div class="demo-frame animate">
+          <div class="demo-header">
+            <div class="demo-dots">
+              <span class="demo-dot red"></span>
+              <span class="demo-dot yellow"></span>
+              <span class="demo-dot green"></span>
+            </div>
+            <span class="demo-title">TwinMind-Disaster Dashboard — Streamlit</span>
+          </div>
+          <div class="demo-content">
+            <!-- 
+              IMAGE PATH NOTE FOR GITHUB PAGES:
+              - Place your screenshot at: assets/dashboard.png (relative to index.html)
+              - Ensure filename is lowercase and matches exactly (Linux servers are case-sensitive)
+              - Do not use absolute paths, localhost, or Windows-style paths
+            -->
+            <img 
+              src="../assets/dashboard.png" 
+              alt="System Dashboard showing terrain, flood prediction, and sensor network"
+              onerror="this.style.display='none';this.parentNode.innerHTML+='<p style=\'color:var(--gray);font-size:0.9rem;\'>⚠️ Image not found. Please ensure assets/dashboard.png exists.</p>'"
+            />
+          </div>
+        </div>
+      </div>
+      <p class="demo-caption animate delay-1">
+        Streamlit-based interface showing DEM terrain, predicted flood depth, MC Dropout uncertainty maps, and AI-optimized sensor placements in real-time.
+      </p>
+    </div>
+  </section>
+
+  <!-- Results Section - Clean & Aligned -->
+  <section id="results">
+    <div class="container">
+      <h2 class="section-title animate">Validated Performance</h2>
+      <div class="results-highlight animate delay-1">
+        <p>Results from terrain-aware flood prediction experiments on GSI DEM data</p>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-card animate">
+          <div class="metric-label">Mean Absolute Error</div>
+          <div class="metric-value">
+            <span class="trend-down">▼</span> 16.4%
+          </div>
+          <div class="metric-desc">Reduction vs. baseline prediction</div>
+        </div>
+        <div class="metric-card animate delay-1">
+          <div class="metric-label">IoU Score</div>
+          <div class="metric-value">
+            <span class="trend-up">▲</span> 25.6%
+          </div>
+          <div class="metric-desc">Improvement in flooded area segmentation</div>
+        </div>
+        <div class="metric-card animate delay-2">
+          <div class="metric-label">Sensor Efficiency</div>
+          <div class="metric-value">
+            <span class="trend-up">▲</span> 89.4%
+          </div>
+          <div class="metric-desc">Fewer observations needed (6.68× gain)</div>
+        </div>
+        <div class="metric-card animate delay-3">
+          <div class="metric-label">Uncertainty Reduction</div>
+          <div class="metric-value">
+            <span class="trend-down">▼</span> 3.1×
+          </div>
+          <div class="metric-desc">Per decision cycle with AI placement</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision Section -->
+  <section id="vision" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white;">
+    <div class="container">
+      <h2 class="section-title animate" style="color: white;">TwinMind Vision</h2>
+      <div class="vision-content animate delay-1">
+        <p>
+          TwinMind aims to become a <span class="vision-highlight">Reality Operating System for Earth observation</span>—where AI continuously learns from terrain, climate, and sensor data to predict, simulate, and optimize real-world outcomes.
+        </p>
+        <p style="margin-top: 1rem; font-weight: 500;">
+          "Predicting water, protecting life."
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="tech-credits">
+        <span>GSI Japan (DEM data)</span>
+        <span>io.net / io.cloud (H100 GPU)</span>
+        <span>MLflow experiment tracking</span>
+        <span>Streamlit dashboard</span>
+        <span>PyTorch + MC Dropout</span>
+      </div>
+      <p class="copyright">
+        © 2024-2026 Zenji Oka | TwinMind-Disaster | MIT License
+      </p>
+      <p style="margin-top: 0.4rem; opacity: 0.85; font-size: 0.83rem;">
+        Terrain data: Geospatial Information Authority of Japan • Architecture: Hybrid U-Net + Reservoir + MC Dropout
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Subtle scroll animation
+    document.addEventListener('DOMContentLoaded', function() {
+      const animateElements = document.querySelectorAll('.animate');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      animateElements.forEach(el => {
+        el.style.opacity = 0;
+        el.style.transform = 'translateY(16px)';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(el);
+      });
+      
+      // Auto-trigger hero animations
+      setTimeout(() => {
+        document.querySelectorAll('.hero .animate, .core-message').forEach(el => {
+          el.style.opacity = 1;
+          el.style.transform = 'translateY(0)';
+        });
+      }, 200);
+    });
+  </script>
 </body>
 </html>
