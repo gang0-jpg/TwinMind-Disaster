@@ -1,0 +1,12 @@
+cases_dir: data/cases
+epochs: 40
+batch_size: 32
+num_workers: 8
+lr: 0.001
+seed: 42
+save_path: runs/unet_cases_unet_h100.pt
+train_ratio: 0.8
+base_channels: 32
+amp: true
+split_info_path: runs/train_val_split_h100.json
+device: cuda
