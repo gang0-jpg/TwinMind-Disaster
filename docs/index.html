@@ -2,1015 +2,246 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TwinMind-Disaster | AI Decision System for Flood Prediction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TwinMind-Disaster</title>
   <style>
     :root {
-      --primary: #0a2540;
-      --secondary: #1a4d7a;
-      --accent: #00c1d4;
-      --accent-dark: #008a99;
-      --light: #f8fbff;
-      --gray: #64748b;
-      --success: #16a34a;
-      --card-bg: #ffffff;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
-      --border-radius: 12px;
-      --transition: all 0.3s ease;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #16304b;
+      --muted: #5f6f86;
+      --accent: #10b7c4;
+      --border: #d8e0ea;
+      --shadow: 0 10px 30px rgba(20, 40, 80, 0.08);
+      --radius: 18px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.6;
-      color: var(--primary);
-      background: var(--light);
-      overflow-x: hidden;
     }
 
     .container {
-      width: 100%;
-      max-width: 1200px;
+      width: min(1100px, 92%);
       margin: 0 auto;
-      padding: 0 2rem;
     }
 
-    /* Hero Section */
-    .hero {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: white;
-      padding: 4.5rem 0 3.5rem;
+    header {
+      padding: 56px 0 24px;
       text-align: center;
-      position: relative;
     }
 
-    .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
-
-    .hero h1 {
-      font-size: 2.6rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      line-height: 1.2;
+    header h1 {
+      margin: 0;
+      font-size: 3rem;
+      font-weight: 800;
       letter-spacing: -0.02em;
     }
 
-    .hero .subtitle {
-      font-size: 1.3rem;
-      font-weight: 300;
-      opacity: 0.95;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-tagline {
-      background: rgba(255, 255, 255, 0.15);
-      display: inline-block;
-      padding: 0.4rem 1.2rem;
-      border-radius: 50px;
-      font-weight: 500;
-      font-size: 0.95rem;
-      backdrop-filter: blur(4px);
-    }
-
-    /* Core Message Banner */
-    .core-message {
-      background: var(--card-bg);
-      border-left: 4px solid var(--accent);
-      padding: 1rem 1.5rem;
-      margin: -1.5rem auto 2.5rem;
-      max-width: 800px;
-      border-radius: 0 var(--border-radius) var(--border-radius) 0;
-      box-shadow: var(--shadow);
-      font-size: 1.05rem;
-      color: var(--secondary);
-      font-weight: 500;
-      position: relative;
-      z-index: 2;
-    }
-
-    .core-message strong { color: var(--accent-dark); }
-
-    /* Key Message Banner - Subtle */
-    .key-message {
-      background: var(--card-bg);
-      border: 1px solid rgba(0, 193, 212, 0.3);
-      border-left: 4px solid var(--accent);
-      color: var(--primary);
-      text-align: center;
-      padding: 1rem 1.5rem;
-      margin: 2rem 0;
-      border-radius: var(--border-radius);
-      font-size: 1.15rem;
-      font-weight: 500;
-      box-shadow: var(--shadow);
-    }
-
-    /* Section Styling */
-    section { padding: 3.5rem 0; }
-    section:nth-child(even) { background: white; }
-    section:nth-child(odd):not(.hero) { background: var(--light); }
-
-    .section-title {
-      text-align: center;
-      font-size: 1.9rem;
-      font-weight: 700;
-      margin-bottom: 2.5rem;
-      position: relative;
-      display: inline-block;
-      left: 50%;
-      transform: translateX(-50%);
-      page-break-after: avoid;
-      break-after: avoid;
-    }
-
-    .section-title::after {
-      content: "";
-      position: absolute;
-      bottom: -10px; left: 50%;
-      transform: translateX(-50%);
-      width: 60px; height: 4px;
+    .underline {
+      width: 64px;
+      height: 4px;
+      border-radius: 999px;
       background: var(--accent);
-      border-radius: 2px;
+      margin: 14px auto 0;
     }
 
-    /* Decision Loop Diagram - Print Safe */
-    .loop-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 2.5rem 0;
-      position: relative;
-      min-height: 380px;
-      page-break-inside: avoid;
-      break-inside: avoid;
+    section {
+      padding: 26px 0;
     }
 
-    .loop-diagram {
-      position: relative;
-      width: 300px;
-      height: 300px;
-      page-break-inside: avoid;
-      break-inside: avoid;
-    }
-
-    .loop-circle {
-      position: absolute;
-      width: 100%; height: 100%;
-      border: 2px solid var(--accent);
-      border-radius: 50%;
-      opacity: 0.6;
-    }
-
-    .loop-step {
-      position: absolute;
-      width: 100px;
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      padding: 0.8rem 0.6rem;
+    .lead {
       text-align: center;
+      color: var(--muted);
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1.08rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
-      font-weight: 600;
-      font-size: 0.88rem;
-      z-index: 2;
-      border: 1px solid rgba(0,0,0,0.08);
-      page-break-inside: avoid;
-      break-inside: avoid;
-    }
-
-    .step-1 { top: 0; left: 50%; transform: translateX(-50%); }
-    .step-2 { top: 22%; right: 5%; transform: translateY(-50%); }
-    .step-3 { bottom: 22%; right: 5%; transform: translateY(50%); }
-    .step-4 { bottom: 0; left: 50%; transform: translateX(-50%); }
-    .step-5 { top: 22%; left: 5%; transform: translate(-50%, -50%); }
-
-    .loop-arrow {
-      position: absolute;
-      font-size: 1.1rem;
-      color: var(--accent-dark);
-      z-index: 1;
-      font-weight: 500;
-    }
-
-    .arrow-1 { top: 18%; right: 28%; transform: rotate(35deg); }
-    .arrow-2 { right: 18%; bottom: 32%; transform: rotate(125deg); }
-    .arrow-3 { bottom: 18%; left: 28%; transform: rotate(215deg); }
-    .arrow-4 { left: 18%; top: 32%; transform: rotate(305deg); }
-
-    /* Architecture Section - Print Safe */
-    .architecture-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .arch-card {
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      padding: 1.2rem 1rem;
-      box-shadow: var(--shadow);
-      text-align: center;
-      border-top: 3px solid var(--accent);
-      page-break-inside: avoid;
-      break-inside: avoid;
-    }
-
-    .arch-icon {
-      font-size: 1.8rem;
-      margin-bottom: 0.7rem;
-      color: var(--accent);
-    }
-
-    .arch-card h4 {
-      margin: 0.4rem 0 0.3rem;
-      font-weight: 600;
-      font-size: 0.98rem;
-    }
-
-    .arch-card p {
-      color: var(--gray);
-      font-size: 0.88rem;
-      line-height: 1.4;
-    }
-
-    .arch-highlight {
-      background: rgba(0, 193, 212, 0.06);
-    }
-
-    /* Demo Section - Print Safe */
-    .demo-wrapper {
-      display: flex;
-      justify-content: center;
-      margin: 2rem 0;
-      page-break-inside: avoid;
-      break-inside: avoid;
-    }
-
-    .demo-frame {
-      width: 100%;
-      max-width: 920px;
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(0,0,0,0.1);
-      background: white;
       overflow: hidden;
-      page-break-inside: avoid;
-      break-inside: avoid;
     }
 
-    .demo-header {
-      background: #f1f5f9;
-      padding: 0.6rem 1rem;
+    .window-bar {
+      background: #eef2f7;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      border-bottom: 1px solid rgba(0,0,0,0.08);
+      gap: 10px;
     }
 
-    .demo-dots { display: flex; gap: 0.35rem; }
-    .demo-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .demo-dot.red { background: #ef4444; }
-    .demo-dot.yellow { background: #f59e0b; }
-    .demo-dot.green { background: #10b981; }
-
-    .demo-title {
-      font-size: 0.82rem;
-      color: var(--gray);
-      font-weight: 500;
-      margin-left: 0.3rem;
-    }
-
-    .demo-content {
-      min-height: 420px;
-      background: var(--light);
+    .dots {
       display: flex;
+      gap: 7px;
       align-items: center;
-      justify-content: center;
-      padding: 0.5rem;
+      flex-shrink: 0;
     }
 
-    .demo-content img {
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .red { background: #ff5f57; }
+    .yellow { background: #febc2e; }
+    .green { background: #28c840; }
+
+    .window-title {
+      font-size: 0.95rem;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .dashboard-image {
+      display: block;
       width: 100%;
       height: auto;
-      max-width: 920px;
-      display: block;
-      border-radius: 8px;
+      background: #fff;
     }
 
-    .demo-caption {
-      text-align: center;
-      max-width: 700px;
-      margin: 1rem auto 0;
-      color: var(--gray);
-      font-size: 0.93rem;
-    }
-
-    /* Results Section - Print Safe */
-    .results-highlight {
-      text-align: center;
-      margin-bottom: 1.8rem;
-    }
-
-    .results-highlight p {
-      font-size: 1.05rem;
-      color: var(--secondary);
-      font-weight: 500;
-    }
-
-    .metrics-grid {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-top: 1.2rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 12px;
     }
 
-    .metric-card {
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      padding: 1.4rem 1.2rem;
-      text-align: center;
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
-      border-top: 3px solid var(--accent);
-      page-break-inside: avoid;
-      break-inside: avoid;
+      padding: 24px;
     }
 
-    .metric-label {
-      color: var(--gray);
-      font-weight: 600;
-      font-size: 0.92rem;
-      margin-bottom: 0.4rem;
+    .info-card h2 {
+      margin: 0 0 12px;
+      font-size: 1.35rem;
     }
 
-    .metric-value {
-      font-size: 1.85rem;
-      font-weight: 700;
-      color: var(--secondary);
-      margin: 0.3rem 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.25rem;
+    .info-card p,
+    .info-card li {
+      color: var(--muted);
     }
 
-    .metric-value .trend-down { color: var(--success); font-size: 1.2rem; }
-    .metric-value .trend-up { color: var(--accent-dark); font-size: 1.2rem; }
-
-    .metric-desc {
-      font-size: 0.83rem;
-      color: var(--gray);
-      margin-top: 0.3rem;
-      line-height: 1.35;
+    ul {
+      margin: 0;
+      padding-left: 1.2rem;
     }
 
-    /* Vision Section */
-    .vision-content {
-      max-width: 750px;
-      margin: 0 auto;
-      text-align: center;
-      font-size: 1.08rem;
-      line-height: 1.6;
-    }
-
-    .vision-highlight {
-      color: var(--accent-dark);
-      font-weight: 600;
-    }
-
-    /* Footer */
     footer {
-      background: var(--primary);
-      color: rgba(255,255,255,0.85);
-      padding: 1.8rem 0 1rem;
+      padding: 36px 0 56px;
       text-align: center;
-      font-size: 0.88rem;
+      color: var(--muted);
+      font-size: 0.95rem;
     }
 
-    .tech-credits {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin: 1rem 0;
-      font-weight: 500;
-      font-size: 0.88rem;
-    }
-
-    .tech-credits span {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .tech-credits span::before {
-      content: "•";
+    a {
       color: var(--accent);
-      font-weight: bold;
+      text-decoration: none;
     }
 
-    .copyright {
-      opacity: 0.8;
-      margin-top: 0.6rem;
-      font-size: 0.83rem;
+    a:hover {
+      text-decoration: underline;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero h1 { font-size: 2.1rem; }
-      .hero .subtitle { font-size: 1.15rem; }
-      .key-message { font-size: 1.05rem; }
-      .core-message { font-size: 0.95rem; margin: -1rem auto 2rem; }
-      .loop-diagram { width: 270px; height: 270px; }
-      .loop-step { width: 90px; font-size: 0.82rem; padding: 0.7rem 0.4rem; }
-      .metric-value { font-size: 1.65rem; }
-      section { padding: 2.8rem 0; }
-    }
-
-    @media (max-width: 480px) {
-      .container { padding: 0 1.3rem; }
-      .hero { padding: 3rem 0 2.5rem; }
-      .hero h1 { font-size: 1.8rem; }
-      .section-title { font-size: 1.6rem; }
-      .loop-diagram { width: 240px; height: 240px; }
-      .loop-step { width: 80px; font-size: 0.76rem; }
-      .metric-value { font-size: 1.5rem; }
-      .demo-content { min-height: 320px; }
-    }
-
-    /* Subtle animation */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate { animation: fadeInUp 0.5s ease forwards; }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.3s; }
-    .delay-4 { animation-delay: 0.4s; }
-
-    /* ========== PRINT/PDF STYLES - OPTIMIZED ========== */
-    @media print {
-      /* Disable all animations for print */
-      .animate {
-        animation: none !important;
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
+    @media (max-width: 820px) {
+      header h1 {
+        font-size: 2.2rem;
       }
 
-      /* Prevent page breaks inside key elements */
-      .demo-frame,
-      .arch-card,
-      .metric-card,
-      .loop-diagram,
-      .loop-container,
-      .core-message,
-      .key-message,
-      .metrics-grid,
-      .architecture-grid {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        break-after: avoid !important;
+      .grid {
+        grid-template-columns: 1fr;
       }
 
-      /* Keep sections together - prevent orphan content */
-      section {
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
-
-      /* Keep footer with last section */
-      #vision, footer {
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
-
-      footer {
-        page-break-before: avoid;
-        break-before: avoid;
-      }
-
-      /* Reduce excessive vertical whitespace */
-      .hero {
-        padding: 2rem 0 1.5rem !important;
-      }
-
-      section {
-        padding: 1.5rem 0 !important;
-      }
-
-      .section-title {
-        margin-bottom: 1.2rem !important;
-        font-size: 1.5rem !important;
-      }
-
-      .section-title::after {
-        bottom: -6px !important;
-        height: 3px !important;
-      }
-
-      /* Reduce hero height for print */
-      .hero h1 {
-        font-size: 1.8rem !important;
-        margin-bottom: 0.5rem !important;
-      }
-
-      .hero .subtitle {
-        font-size: 1rem !important;
-        margin-bottom: 0.8rem !important;
-      }
-
-      .hero-tagline {
-        font-size: 0.85rem !important;
-        padding: 0.3rem 0.8rem !important;
-      }
-
-      /* Reduce banner margins */
-      .core-message {
-        margin: -0.8rem auto 1.2rem !important;
-        padding: 0.7rem 1rem !important;
-        font-size: 0.95rem !important;
-      }
-
-      .key-message {
-        margin: 1rem 0 !important;
-        padding: 0.8rem 1rem !important;
-        font-size: 1rem !important;
-      }
-
-      /* Reduce loop diagram size */
-      .loop-container {
-        margin: 1.2rem 0 !important;
-        min-height: 280px !important;
-      }
-
-      .loop-diagram {
-        width: 240px !important;
-        height: 240px !important;
-      }
-
-      .loop-step {
-        width: 85px !important;
-        font-size: 0.75rem !important;
-        padding: 0.5rem 0.3rem !important;
-      }
-
-      .loop-arrow {
-        font-size: 0.9rem !important;
-      }
-
-      /* Reduce architecture card padding */
-      .architecture-grid {
-        gap: 0.6rem !important;
-        margin-top: 0.8rem !important;
-      }
-
-      .arch-card {
-        padding: 0.8rem 0.6rem !important;
-      }
-
-      .arch-icon {
-        font-size: 1.4rem !important;
-        margin-bottom: 0.4rem !important;
-      }
-
-      .arch-card h4 {
-        font-size: 0.88rem !important;
-        margin: 0.2rem 0 !important;
-      }
-
-      .arch-card p {
-        font-size: 0.78rem !important;
-        line-height: 1.3 !important;
-      }
-
-      /* Reduce demo section size */
-      .demo-wrapper {
-        margin: 1rem 0 !important;
-      }
-
-      .demo-content {
-        min-height: 320px !important;
-        padding: 0.3rem !important;
-      }
-
-      .demo-header {
-        padding: 0.4rem 0.6rem !important;
-      }
-
-      .demo-title {
-        font-size: 0.75rem !important;
-      }
-
-      .demo-caption {
-        margin: 0.6rem auto 0 !important;
-        font-size: 0.83rem !important;
-      }
-
-      /* Reduce metrics section spacing */
-      .results-highlight {
-        margin-bottom: 1rem !important;
-      }
-
-      .results-highlight p {
-        font-size: 0.93rem !important;
-      }
-
-      .metrics-grid {
-        gap: 0.6rem !important;
-        margin-top: 0.8rem !important;
-      }
-
-      .metric-card {
-        padding: 0.9rem 0.8rem !important;
-      }
-
-      .metric-label {
-        font-size: 0.83rem !important;
-        margin-bottom: 0.2rem !important;
-      }
-
-      .metric-value {
-        font-size: 1.4rem !important;
-        margin: 0.2rem 0 !important;
-      }
-
-      .metric-value .trend-down,
-      .metric-value .trend-up {
-        font-size: 1rem !important;
-      }
-
-      .metric-desc {
-        font-size: 0.75rem !important;
-        margin-top: 0.2rem !important;
-      }
-
-      /* Reduce vision section */
-      .vision-content {
-        font-size: 0.95rem !important;
-        line-height: 1.5 !important;
-      }
-
-      .vision-highlight {
-        font-weight: 600 !important;
-      }
-
-      /* Improve text contrast for colored sections */
-      .hero {
-        background: #ffffff !important;
-        color: #000000 !important;
-        border: 2px solid var(--primary) !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      .hero h1,
-      .hero .subtitle,
-      .hero .hero-tagline {
-        color: #000000 !important;
-      }
-
-      .hero-tagline {
-        background: #e8e8e8 !important;
-        color: #000000 !important;
-      }
-
-      #vision {
-        background: #ffffff !important;
-        color: #000000 !important;
-        border: 2px solid var(--primary) !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      #vision .section-title,
-      #vision .vision-content,
-      #vision .vision-highlight {
-        color: #000000 !important;
-      }
-
-      /* Remove shadows for cleaner print */
-      .demo-frame,
-      .arch-card,
-      .metric-card,
-      .core-message,
-      .key-message {
-        box-shadow: none !important;
-        border: 1px solid #cccccc !important;
-      }
-
-      /* Ensure images print properly */
-      .demo-content img {
-        max-width: 100% !important;
-        height: auto !important;
-        page-break-inside: avoid !important;
-      }
-
-      /* Simplify decorative elements */
-      .section-title::after {
-        background: #000000 !important;
-      }
-
-      .demo-dots {
-        display: none;
-      }
-
-      /* Remove central loop arrow for cleaner print */
-      .arrow-5 {
-        display: none;
-      }
-
-      /* Footer styling for print - compact */
-      footer {
-        background: #f5f5f5 !important;
-        color: #000000 !important;
-        padding: 1rem 0 0.5rem !important;
-        margin-top: 0.5rem !important;
-        border-top: 1px solid #cccccc !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      .tech-credits {
-        gap: 0.6rem !important;
-        margin: 0.5rem 0 !important;
-        font-size: 0.78rem !important;
-      }
-
-      .tech-credits span::before {
-        color: #000000 !important;
-      }
-
-      .copyright {
-        margin-top: 0.3rem !important;
-        font-size: 0.75rem !important;
-      }
-
-      /* Container padding for print */
-      .container {
-        padding: 0 1rem !important;
-      }
-
-      /* Proper page margins - compact */
-      @page {
-        margin: 1.2cm 1cm;
-        size: A4;
-      }
-
-      /* Base body for print */
-      body {
-        background: #ffffff !important;
-        color: #000000 !important;
-        font-size: 10pt !important;
-        line-height: 1.4 !important;
-      }
-
-      /* Remove gradients for faster printing */
-      .hero,
-      #vision {
-        background: #ffffff !important;
-        border: 2px solid var(--primary) !important;
-      }
-
-      /* Prevent widows and orphans */
-      p, h1, h2, h3, h4, h5, h6 {
-        orphans: 2;
-        widows: 2;
-      }
-
-      /* Ensure last section and footer stay together */
-      #vision + footer {
-        page-break-before: avoid !important;
-        break-before: avoid !important;
+      .window-title {
+        font-size: 0.85rem;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container hero-content">
-      <h1>We place sensors where AI is uncertain.</h1>
-      <p class="subtitle">AI Digital Twin for Terrain-Aware Flood Prediction</p>
-      <div class="hero-tagline">From prediction to intelligent observation</div>
-    </div>
-  </section>
-
-  <!-- Core Message -->
-  <div class="container">
-    <div class="core-message animate">
-      This is not only a prediction model. It is an <strong>AI decision system driven by uncertainty</strong>.
-    </div>
-  </div>
-
-  <!-- Key Message Banner -->
-  <div class="container">
-    <div class="key-message animate delay-1">
-      AI does not only predict.<br>
-      It decides where to observe next.
-    </div>
-  </div>
-
-  <!-- System Flow: Decision Loop -->
-  <section id="system-flow">
+  <header>
     <div class="container">
-      <h2 class="section-title animate">Decision Loop Architecture</h2>
-      <div class="loop-container">
-        <div class="loop-diagram">
-          <div class="loop-circle"></div>
-          
-          <div class="loop-step step-1 animate">Prediction</div>
-          <div class="loop-step step-2 animate delay-1">Uncertainty</div>
-          <div class="loop-step step-3 animate delay-2">Sensor Placement</div>
-          <div class="loop-step step-4 animate delay-3">Observation</div>
-          <div class="loop-step step-5 animate delay-4">Update</div>
-          
-          <div class="loop-arrow arrow-1">↗</div>
-          <div class="loop-arrow arrow-2">↘</div>
-          <div class="loop-arrow arrow-3">↙</div>
-          <div class="loop-arrow arrow-4">↖</div>
-        </div>
-      </div>
-      <p style="text-align: center; max-width: 680px; margin: 1.5rem auto 0; color: var(--gray);" class="animate delay-4">
-        TwinMind-Disaster continuously learns from terrain and sensor data to autonomously optimize observation networks—reducing uncertainty where it matters most.
+      <h1>System Dashboard</h1>
+      <div class="underline"></div>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      <p class="lead">
+        TwinMind-Disaster is an AI-based digital twin system for terrain-aware flood prediction,
+        uncertainty estimation, and sensor placement optimization.
       </p>
     </div>
   </section>
 
-  <!-- Architecture Section -->
-  <section id="architecture">
+  <section>
     <div class="container">
-      <h2 class="section-title animate">Hybrid AI Architecture</h2>
-      <div class="architecture-grid">
-        <div class="arch-card arch-highlight animate">
-          <div class="arch-icon">🧠</div>
-          <h4>U-Net Prediction</h4>
-          <p>Lightweight CNN predicts flood depth from terrain + rainfall inputs</p>
+      <div class="card">
+        <div class="window-bar">
+          <div class="dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="window-title">TwinMind-Disaster Dashboard — Streamlit</div>
         </div>
-        <div class="arch-card arch-highlight animate delay-1">
-          <div class="arch-icon">🔄</div>
-          <h4>Reservoir Computing</h4>
-          <p>Auxiliary temporal representation to improve structural stability</p>
+
+        <!-- ここが重要: docs/index.html から見て ../assets/dashboard.png -->
+        <img
+          class="dashboard-image"
+          src="../assets/dashboard.png"
+          alt="TwinMind-Disaster dashboard screenshot"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="grid">
+        <div class="info-card">
+          <h2>Overview</h2>
+          <p>
+            The system predicts flood depth from terrain data and rainfall, estimates model
+            uncertainty, and proposes effective sensor placement based on uncertainty and
+            road-constrained candidate locations.
+          </p>
         </div>
-        <div class="arch-card arch-highlight animate delay-2">
-          <div class="arch-icon">🎲</div>
-          <h4>MC Dropout</h4>
-          <p>Uncertainty quantification via Monte Carlo inference for risk-aware decisions</p>
-        </div>
-        <div class="arch-card arch-highlight animate delay-3">
-          <div class="arch-icon">🎯</div>
-          <h4>Sensor Placement</h4>
-          <p>AI selects next-best observation points to maximize information gain</p>
-        </div>
-        <div class="arch-card animate delay-4">
-          <div class="arch-icon">🖥️</div>
-          <h4>Digital Twin Dashboard</h4>
-          <p>Real-time visualization: terrain, flood risk, uncertainty, sensors</p>
+
+        <div class="info-card">
+          <h2>Core Technologies</h2>
+          <ul>
+            <li>U-Net for spatial flood-depth prediction</li>
+            <li>Reservoir computing for structural support</li>
+            <li>MC Dropout for uncertainty estimation</li>
+            <li>Sensor placement optimization using variance maps</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Demo Section - GitHub Pages Safe Image -->
-  <section id="demo">
-    <div class="container">
-      <h2 class="section-title animate">System Dashboard</h2>
-      <div class="demo-wrapper">
-        <div class="demo-frame animate">
-          <div class="demo-header">
-            <div class="demo-dots">
-              <span class="demo-dot red"></span>
-              <span class="demo-dot yellow"></span>
-              <span class="demo-dot green"></span>
-            </div>
-            <span class="demo-title">TwinMind-Disaster Dashboard — Streamlit</span>
-          </div>
-          <div class="demo-content">
-            <!-- 
-              IMAGE PATH NOTE FOR GITHUB PAGES:
-              - Place your screenshot at: assets/dashboard.png (relative to index.html)
-              - Ensure filename is lowercase and matches exactly (Linux servers are case-sensitive)
-              - Do not use absolute paths, localhost, or Windows-style paths
-            -->
-            <img 
-              src="../assets/dashboard.png" 
-              alt="System Dashboard showing terrain, flood prediction, and sensor network"
-              onerror="this.style.display='none';this.parentNode.innerHTML+='<p style=\'color:var(--gray);font-size:0.9rem;\'>⚠️ Image not found. Please ensure assets/dashboard.png exists.</p>'"
-            />
-          </div>
-        </div>
-      </div>
-      <p class="demo-caption animate delay-1">
-        Streamlit-based interface showing DEM terrain, predicted flood depth, MC Dropout uncertainty maps, and AI-optimized sensor placements in real-time.
-      </p>
-    </div>
-  </section>
-
-  <!-- Results Section - Clean & Aligned -->
-  <section id="results">
-    <div class="container">
-      <h2 class="section-title animate">Validated Performance</h2>
-      <div class="results-highlight animate delay-1">
-        <p>Results from terrain-aware flood prediction experiments on GSI DEM data</p>
-      </div>
-      <div class="metrics-grid">
-        <div class="metric-card animate">
-          <div class="metric-label">Mean Absolute Error</div>
-          <div class="metric-value">
-            <span class="trend-down">▼</span> 16.4%
-          </div>
-          <div class="metric-desc">Reduction vs. baseline prediction</div>
-        </div>
-        <div class="metric-card animate delay-1">
-          <div class="metric-label">IoU Score</div>
-          <div class="metric-value">
-            <span class="trend-up">▲</span> 25.6%
-          </div>
-          <div class="metric-desc">Improvement in flooded area segmentation</div>
-        </div>
-        <div class="metric-card animate delay-2">
-          <div class="metric-label">Sensor Efficiency</div>
-          <div class="metric-value">
-            <span class="trend-up">▲</span> 89.4%
-          </div>
-          <div class="metric-desc">Fewer observations needed (6.68× gain)</div>
-        </div>
-        <div class="metric-card animate delay-3">
-          <div class="metric-label">Uncertainty Reduction</div>
-          <div class="metric-value">
-            <span class="trend-down">▼</span> 3.1×
-          </div>
-          <div class="metric-desc">Per decision cycle with AI placement</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Vision Section -->
-  <section id="vision" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white;">
-    <div class="container">
-      <h2 class="section-title animate" style="color: white;">TwinMind Vision</h2>
-      <div class="vision-content animate delay-1">
-        <p>
-          TwinMind aims to become a <span class="vision-highlight">Reality Operating System for Earth observation</span>—where AI continuously learns from terrain, climate, and sensor data to predict, simulate, and optimize real-world outcomes.
-        </p>
-        <p style="margin-top: 1rem; font-weight: 500;">
-          "Predicting water, protecting life."
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
   <footer>
     <div class="container">
-      <div class="tech-credits">
-        <span>GSI Japan (DEM data)</span>
-        <span>io.net / io.cloud (H100 GPU)</span>
-        <span>MLflow experiment tracking</span>
-        <span>Streamlit dashboard</span>
-        <span>PyTorch + MC Dropout</span>
-      </div>
-      <p class="copyright">
-        © 2024-2026 Zenji Oka | TwinMind-Disaster | MIT License
-      </p>
-      <p style="margin-top: 0.4rem; opacity: 0.85; font-size: 0.83rem;">
-        Terrain data: Geospatial Information Authority of Japan • Architecture: Hybrid U-Net + Reservoir + MC Dropout
-      </p>
+      Built for TwinMind-Disaster Project
     </div>
   </footer>
-
-  <script>
-    // Subtle scroll animation
-    document.addEventListener('DOMContentLoaded', function() {
-      const animateElements = document.querySelectorAll('.animate');
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = 'translateY(0)';
-          }
-        });
-      }, { threshold: 0.1 });
-      
-      animateElements.forEach(el => {
-        el.style.opacity = 0;
-        el.style.transform = 'translateY(16px)';
-        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        observer.observe(el);
-      });
-      
-      // Auto-trigger hero animations
-      setTimeout(() => {
-        document.querySelectorAll('.hero .animate, .core-message').forEach(el => {
-          el.style.opacity = 1;
-          el.style.transform = 'translateY(0)';
-        });
-      }, 200);
-    });
-  </script>
 </body>
 </html>
