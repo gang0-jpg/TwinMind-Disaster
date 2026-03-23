@@ -1,49 +1,7 @@
-__pycache__/
-n
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Virtual env
-.venv/
-venv/
-env/
-
-# Logs / local outputs
-logs/
-runs/
-mlruns/
-mlflow.db
-
-# Model files
+outputs/
+data/
+*.npz
 *.pt
 *.pth
-
-# DEM intermediate files
-data/dem_xml/
-data/dem_npy/
-data/dem_npy_grid/
-
-# Optional: generated datasets / previews
-# GitHub を軽くしたいなら有効化
-# data/cases/
-# data/preview/
-
-# OS / editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-*.pyc
-
-runs/
-mlruns/
-mlflow.db
-
-data/dem_xml/
-data/dem_npy/
-data/dem_npy_grid/
-
-*.pt
-
+*.swp
+__pycache__/

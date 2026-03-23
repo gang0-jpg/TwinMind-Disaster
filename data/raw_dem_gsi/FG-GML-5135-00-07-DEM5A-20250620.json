@@ -1,0 +1,35 @@
+{
+  "xml_file": "data/gsi_source/FG-GML-5135-00-07-DEM5A-20250620.xml",
+  "mesh": "51350007",
+  "type": "5mメッシュ（標高）",
+  "low": [
+    0,
+    0
+  ],
+  "high": [
+    224,
+    149
+  ],
+  "shape": [
+    150,
+    225
+  ],
+  "lower_corner": [
+    34.0,
+    135.0875
+  ],
+  "upper_corner": [
+    34.008333333,
+    135.1
+  ],
+  "start_point": [
+    104,
+    7
+  ],
+  "sequence_rule": "Linear",
+  "sequence_order": "+x-y",
+  "tuple_count": 27136,
+  "nan_count": 23390,
+  "min": -0.25999999046325684,
+  "max": 120.33999633789062
+}

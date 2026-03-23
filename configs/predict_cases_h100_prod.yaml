@@ -1,0 +1,6 @@
+cases_dir: data/cases
+model_path: runs/unet_cases_unet_h100.pt
+output_dir: outputs_cases_unet_h100
+num_samples: 5
+device: cuda
+base_channels: 32
